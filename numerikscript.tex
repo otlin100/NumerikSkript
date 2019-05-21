@@ -235,7 +235,7 @@ $x_0 = 55, \quad x_1 = 56, \quad x_2 = 57, \quad x_3=58$ \\
 Es seien \[log_{10}(55), \medspace log_{10}(56), \medspace log_{10}(57) \text{ und } log_{10}(58)\] bereits bekannt. Berechne eine Näherung von \(f\) an bei \(log_{10}(56.5)\) \\
 $\rightarrow$ Interpolationspolynom $p$:
 \begin{flalign*}
-log_{10}(65.5) &= 1.752048448 &\\
+log_{10}(56.5) &= 1.752048448 &\\
 p(56.5) &= 1.75204845 &\\
 f'(x) &= \frac{1}{ln(10)x} &\\
 f''(x) &= -\frac{1}{ln(10)x^2} &\\
@@ -244,8 +244,8 @@ f^{(4)}(x) &= -\frac{6}{ln(10)x^4} &\\
 \text{Für } x\in[55, 58]: &\\
 \vert f^{(4)}(x)\vert &\leq \frac{6}{55^4 ln(10)}
 \Rightarrow &\\
-\vert log_{10}(56.5) - p(56.5) \vert &\leq 1.5 * 0.5 * 0.5 * 1.5 * \frac{6}{55^4ln(10) \frac{1}{4!}} &\\
-&\approx 6.7 * 10^{-9}
+\vert log_{10}(56.5) - p(56.5) \vert &\leq 1.5 \cdot 0.5 \cdot 0.5 \cdot 1.5 \cdot \frac{6}{55^4ln(10) \frac{1}{4!}} &\\
+&\approx 6.7 \cdot 10^{-9}
 \end{flalign*}
 \end{example}
 
@@ -333,9 +333,9 @@ klar
   \item Für äquidistante Stützstellen $x_i = a + i\frac{b-a}{n}$ ($i=0,...,n$) ist 
     \begin{align*}
     \Lambda_{10} &\approx 40 &\\
-    \Lambda_{20} &\approx 3*10^4 &\\
+    \Lambda_{20} &\approx 3 \cdot 10^4 &\\
     \Lambda_{40} &\approx 10^{10} &\\
-    \Lambda_{n} &\approx \frac{2^n}{ln(n)*e*n} \quad \text{für } n \rightarrow \infty&\\
+    \Lambda_{n} &\approx \frac{2^n}{ \ln(n) \cdot e \cdot n} \quad \text{für } n \rightarrow \infty&\\
     \end{align*}
     $\Rightarrow$ Vorsicht bei Polynominterpolation mit vielen äquidistanten Stützstellen! \\
     In $\S$10 werden wir Stützstellen kennenlernen mit $\Lambda_n \leq 4$ für $n \leq 100$.
@@ -365,7 +365,7 @@ $q$ ist das Interpolationspolynom zu sich selbst in den $x_0,..., x_n$. Nach (9.
 Ohne Einschränkungen sei $[a,b] = [-1, 1]$
 
 \begin{definition}
-$T_n(x) = cos(n * arccos(x))$ für $x \in [-1, 1]$ heißt n-tes Tschebyscheff-Polynom.
+$T_n(x) = \cos(n \cdot \arccos(x))$ für $x \in [-1, 1]$ heißt n-tes Tschebyscheff-Polynom.
 \end{definition}
 
 \begin{lemma}
@@ -375,19 +375,19 @@ $T_n(x)$ ist für $x \in [-1, 1]$ ein Polynom mit folgenden Eigenschaften:
   \item[ii)] $T_n(x) = 2^{n-1} x^n + r(x)$ mit $r_n \in \mathcal{P}_{n-1}$
   \item[iii)] $T_{n+1}(x) = 2xT_n(x) - T_{n-1}(x)$
   \item[iv)] $\forall x \in [-1, 1]: \quad \vert T_n(x) \vert \leq 1$
-  \item[v)] $T_n(cos(\frac{k\pi}{n})) = (-1)^k, \quad k=0,...,n$
-  \item[vi)] $T_n(cos(\frac{(2k+1)\pi}{2n})) = 0, \quad k=0,...,n-1$ 
+  \item[v)] $T_n(\cos(\frac{k\pi}{n})) = (-1)^k, \quad k=0,...,n$
+  \item[vi)] $T_n(\cos(\frac{(2k+1)\pi}{2n})) = 0, \quad k=0,...,n-1$ 
 \end{enumerate}
 \begin{proof}[Beweis]\leavevmode
 \begin{enumerate}
-  \item[i)] klar, da $T_0(x) = cos(0) = 1$, $T_1(x) = cos(arccos(x)) = x, \quad x \in [a,b]$
-  \item[iii)]$cos((n+1)\phi) + cos((n-1)\phi)$\\
-    $= \medspace cos(n\phi)cos(\phi) - sin(n\phi)sin(\phi) + cos(n\phi)cos(-\phi) - sin(n\phi)sin(-\phi)$ \\
-    $= \medspace 2cos(n\phi)cos(\phi)$
+  \item[i)] klar, da $T_0(x) = \cos(0) = 1$, $T_1(x) = \cos(\arccos(x)) = x, \quad x \in [a,b]$
+  \item[iii)]$\cos(\left(n+1\right)\phi) + \cos(\left(n-1\right)\phi)$\\
+    $= \medspace \cos(n\phi)\cos(\phi) - \sin(n\phi)\sin(\phi) + \cos(n\phi)\cos(-\phi) - \sin(n\phi)\sin(-\phi)$ \\
+    $= \medspace 2\cos(n\phi)\cos(\phi)$
   \item[ii)] folgt aus i) und iii)
-  \item[iv)] klar, da $cos: [-1, 1] \rightarrow \mathbb{R}$
-  \item[v) + vi)] ebenfalls klar, da $T_n(cos(\frac{k\pi}{n})) = cos(n \frac{k\pi}{n}) = cos(k\pi) = (-1)^k$\\
-  analog: $T_n(cos(\frac{(2k+1)\pi}{2n})) = cos(n \frac{(2k+1)\pi}{2n})  = 0$
+  \item[iv)] klar, da $\cos: [-1, 1] \rightarrow \mathbb{R}$
+  \item[v) + vi)] ebenfalls klar, da $T_n(\cos(\frac{k\pi}{n})) = \cos(n \frac{k\pi}{n}) = \cos(k\pi) = (-1)^k$\\
+  analog: $T_n(\cos(\frac{(2k+1)\pi}{2n})) = \cos(n \frac{(2k+1)\pi}{2n})  = 0$
 \end{enumerate}
 \end{proof}
 \end{lemma}
@@ -421,7 +421,7 @@ $$ \max_{x \in [-1, 1]} \vert (x-x_0)(x-x_1)...(x-x_n) \vert $$
 minimal für $x_k = cos\left( \frac{2k+1}{n+1} \frac{\pi}{2}\right), \quad k=0,...,n$ (d.h. $x_k$ sind die Wurzeln von $T_{n+1}$)
 
 \begin{proof}[Beweis]
-Nach Lemma (10.4) wird $\max_{x \in [-1, 1]} \vert (x-x_0)(x-x_1)...(x-x_n) \vert$ minimal gdw.  $(x-x_0)...(x-x_n) = 2^{-n} T_{n+1}(x)$, d.h. falls $x_k$ Wurzeln von $T_{n+1}$ sind.
+Nach Lemma (10.4) wird $\max_{x \in [-1, 1]} \vert (x-x_0)(x-x_1)...(x-x_n) \vert$ minimal gdw.  $(x-x_0)...(x-x_n) = 2^{n} T_{n+1}(x)$, d.h. falls $x_k$ Wurzeln von $T_{n+1}$ sind.
 \end{proof}
 \end{theorem}
 
@@ -454,16 +454,16 @@ Die Tschebyscheffpolynome $T_k, k = 0, ..., n$ sind orthogonal bzgl. des Skalarp
 
 \begin{proof}[Beweis]\leavevmode
 \begin{align*}
-T_k(x_l) &= \text{cos}(k *\text{arccos}( \text{cos} ( \frac{2l-1}{n+1} \frac{\pi}{2}))) &\\
+T_k(x_l) &= \text{cos}(k \cdot \text{arccos}( \text{cos} ( \frac{2l-1}{n+1} \frac{\pi}{2}))) &\\
 &= \text{cos}( k \frac{2l+1}{n+1} \frac{\pi}{2}) &\\
 &= \text{cos}(k (l+ \frac{1}{2})h )
 \end{align*}
 für $h = \frac{\pi}{n+1}$\\
 Damit ist 
 \begin{align*}
-(T_k, T_j) &= \sum_{l=0}^n \text{cos}(k(l+\frac{1}{2})h) * \text{cos}(j(l+\frac{1}{2})h), &\\
+(T_k, T_j) &= \sum_{l=0}^n \text{cos}(k(l+\frac{1}{2})h) \cdot \text{cos}(j(l+\frac{1}{2})h), &\\
 \intertext{da $\text{cos}(x)\text{cos}(y) = \frac{1}{2}(\text{cos}(x+y) + \text{cos}(x-y))$}
-&= \frac{1}{2} \sum_{l=0}^n \text{cos}((k+j)(l+\frac{1}{2})h) * \text{cos}((k-j)(l+\frac{1}{2})h) &\\
+&= \frac{1}{2} \sum_{l=0}^n \text{cos}((k+j)(l+\frac{1}{2})h) \cdot \text{cos}((k-j)(l+\frac{1}{2})h) &\\
 \intertext{Es gilt: $\text{cos}(x) = \text{Re} (e^{ix})$}
 &= \frac{1}{2} \text{Re}\left( \sum_{l=0}^n e^{i(k+j)(l+\frac{1}{2})h} + e^{i(k-j)(l+\frac{1}{2})h}\right) &\\
 &= \frac{1}{2} \text{Re}\left( \sum_{l=0}^n \left( e^{i(k+j)lh}e^{i(k+j)\frac{h}{2}} + e^{i(k-j)lh}e^{i(k-j)\frac{h}{2}}\right)\right) &\\
