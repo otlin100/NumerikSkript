@@ -53,7 +53,7 @@
 \input{Kapitel_1/Abschnitt_4} %Quadratur mit hoher Ordnung
 \input{Kapitel_1/Abschnitt_5} %Orthogonalpolynome
 \input{Kapitel_1/Abschnitt_6} %Ein adaptives Programm
-\input{Kapitel_1/Abschnitt_7} %Gauß- und Loballo Quadraturformeln
+\input{Kapitel_1/Abschnitt_7} %Gauß- und Lobatto Quadraturformeln
 
 \section{Interpolation und Approximation}
 
@@ -287,7 +287,7 @@ Sei $\bar{x} \in [a,b]$ beliebig.
 \underline{Fragen:}
 \begin{itemize}
   \item Für welche Wahl der Stützstellen $x_i$ ($i=0,...,n$, n fest) ist 
-    $$\max_{x\in[a,b]} \vert \prod_{i=0}^n(x-x_i)\vert$$
+    $$\max_{x\in[a,b]} \left\vert \prod_{i=0}^n(x-x_i)\right\vert$$
     minimal? (Siehe Abschnitt 10)
   \item Wie wirken sich Fehler in den Funktionsauswertungen (etwa Messfehler oder Rechenfehler) auf das Interpolationspolynom aus?
 \end{itemize}
@@ -511,7 +511,7 @@ Sei $p$ das Interpolationspolynom zur Funktion $f$ in den Tschebyscheffknoten $x
 \begin{align*}
 &p(x) = \frac{1}{2} c_0 + \sum_{j=1}^n c_j T_j(x), &\\
 \intertext{wobei}
-&c_k = \frac{2}{n+1} \sum_{l=0}^n f(x_l) \cos(k \frac{2l+1}{n+1}\frac{\pi}{2}), \quad \text{für $k=0,...,n$}
+&c_k = \frac{2}{n+1} \sum_{l=0}^n f(x_l) \cos\left(k \frac{2l+1}{n+1}\frac{\pi}{2}\right), \quad \text{für $k=0,...,n$}
 \end{align*}
 
 \begin{proof}[Beweis]
@@ -770,4 +770,278 @@ Die Bedingung (*) kann erreicht werden durch
   Der dadurch bestimmte Spline heißt \textbf{natürlicher} Spline. Dieser hat aber schlechtere Approximationseigenschaften. 
 \end{enumerate}
 \end{comment}
+
+\begin{nothing}[Konstruktion des Splines]
+Gegeben sind $(x_i, y_i)$ $i=0,...,n$, $a = x_0 < x_1 < ... < x_n = b$, $s\,\rule[-2mm]{0.1mm}{5mm}_{\thinspace [x_{i-1}, x_i]} =: s_i \in \mathcal{P}_3$. \\
+Hermite-Interpolation:
+\begin{align*}
+&s_i(x_i) = y_i &\\
+&s_i(x_{i-1}) = y_{i-1} &\\
+&s_i'(x_i) = \tau_i &\\
+&s_i'(x_{i-1}) = \tau_{i-1}
+\end{align*}
+Dabei sind $\tau$ unbekannte Steigungen. \\
+Ansatz: 
+\begin{align*}
+s_i(x) &= y_{i-1} + (x-x_{i-1}) \delta y[x_{i-1}, x_i] + (x-x_{i-1})(x-x_i) \left( \alpha (x-x_{i-1}) + \beta (x-x_i) \right) &\\
+s_i'(x_{i-1}) &= \delta y[x_{i-1}, x_i] + \beta (x_{i-1} - x_i)^2 = \tau_{i-1} &\\
+s_i'(x_i) &= \delta y[x_{i-1}, x_i] + \alpha (x_i - x_{i-1})^2 = \tau_i &\\
+\Rightarrow \alpha &= \frac{\tau_i - \delta y[x_{i-1}, x_i]}{(x_i - x_{i-1})^2} &\\
+\beta &= \frac{\tau_{i-1} - \delta y[x_{i-1}, x_i]}{(x_{i-1}- x_i)^2} &\\
+h_i &= x_i-x_{i-1} &\\
+\Rightarrow s_i(x) &= y_{i+1} + (x-x_{i-1}) \delta y [x_{i-1}, x_i] &\\ 
+&+ \frac{(x-x_{i-1} )(x-x_i)}{h_i^2} \left( (\tau_i - \delta y[x_{i-1},x_i])(x-x_{i-1})(\tau_{i-1} - \delta y[x_{i-1},x_i])(x-x_i) \right) &\\
+\end{align*}
+Für beliebige $\tau_0,..., \tau_n$ erhalten wir $s: [a,b] \rightarrow \mathbb{R}$ mit 
+\begin{enumerate}
+  \item[i)] $s\,\rule[-2mm]{0.1mm}{5mm}_{\thinspace [x_{i-1}, x_i]} \in \mathcal{P}_3$
+  \item[ii)] $s(x_i) = y_i)$
+  \item[iii)] $s \in \mathcal{C}^1([a,b])$
+\end{enumerate} 
+Bestimme $\tau_0,..., \tau_n$ so, dass $s \in \mathcal{C}^2([a,b])$, d.h. $s_i''(x_i) = s_{i+1}''(x_i)$ für $i=1,...,n-1$. Das sind $(n-1)$ Bedingungen. (\#) \\
+Beim eingespannten Spline sind $\tau_0$ und $\tau_n$ bekannt und die $\tau_1, ..., \tau_{n-1}$ sind die Unbekannten. \\
+Mit
+\begin{align*}
+&(fg)'' = f''g + 2f'g' + fg''
+\intertext{gilt wegen}
+&\frac{d^2}{dx^2} \left( (x-x_{i-1})^2 (x-x_i) \right) \rule[-2mm]{0.1mm}{5mm}_{\thinspace x = x_i} = 4h_i
+\intertext{und}
+&\frac{d^2}{dx^2} \left( (x-x_{i-1}) (x-x_i)^2 \right) \rule[-2mm]{0.1mm}{5mm}_{\thinspace x = x_i} = 2h_i
+\intertext{folgendes:}
+s_i''(x) &= \frac{1}{h_i^2} \left( (\tau_i - \delta y[x_{i-1},x_i]) 4h_i + (\tau_{i-1} - \delta y[x_{i-1},x_i]) 2h_i \right) &\\
+&= \frac{2}{h_i} \left( 2 \tau_i - 3 \delta y[x_{i-1},x_i] + \tau_{i-1} \right)
+\intertext{Ebenso zeigt man:}
+s_{i+1}''(x_i) &= -\frac{2}{h_{i+1}} \left( 2 \tau_i - 3 \delta y[x_{i},x_{i+1}] + \tau_{i+1} \right)
+\end{align*}
+Die Bedingung (\#) $s_i''(x_i) = s_{i+1}''(x_i) \quad i=1,...,n-1$ wird damit zu
+\begin{align*}
+\frac{\tau_{i-1}}{h_i} + 2 \left( \frac{1}{h_i} + \frac{1}{h_{i+1}} \right) \tau_i + \frac{\tau_{i+1}}{h_{i+1}} &= 3 \left( \frac{\delta y[x_{i-1}, x_i]}{h_i} + \frac{\delta y[x_{i}, x_{i+1}]}{h_{i+1}}\right)&\\
+\end{align*}
+Damit erhalten wir ein LGS für $\tau_1, ..., \tau_{n-1}$ 
+\begin{align*}
+&\underbrace{
+\begin{bmatrix} 
+(\frac{2}{h_1} + \frac{2}{h_2}) & \frac{1}{h_2} &0&\dots&0\\ 
+\frac{1}{h_2} & (\frac{2}{h_2} + \frac{2}{h_3}) & \frac{1}{h_3} &\ddots&\vdots\\ 
+0& & \ddots &&0\\
+\vdots&\ddots&&& \frac{1}{h_{n-1}} \\
+0&\dots&0& \frac{1}{h_{n-1}} & ( \frac{2}{h_{n-1}} +  \frac{2}{h_{n}})\\
+\end{bmatrix}
+}_A
+\underbrace{
+\begin{bmatrix}
+\tau_1 \\
+\tau_2 \\
+\vdots \\
+\tau_n \\
+\end{bmatrix}
+}_{\tau} 
+= 
+\underbrace{
+\begin{bmatrix}
+3 \left( \frac{\delta y[x_0,x_1]}{h_1} + \frac{\delta y[x_1,x_2]}{h_2} \right) - \frac{\tau_0}{h_1} \\
+3 \left( \frac{\delta y[x_1,x_2]}{h_2} + \frac{\delta y[x_2,x_3]}{h_3} \right)\\
+\vdots \\
+3 \left( \frac{\delta y[x_{n-2},x_{n-1}]}{h_{n-1}} + \frac{\delta y[x_{n-1},x_n]}{h_n} \right) - \frac{\tau_n}{h_n} \\
+\end{bmatrix}
+}_b
+\end{align*}
+\end{nothing}
+
+\begin{theorem}
+Sei $A$ wie in (12.3) und $A\tau = b$, dann gilt
+$$\max_i \vert \tau_i \vert \leq \frac{h}{2} \max_i \vert b_i \vert,$$
+wobei $\tau = (\tau_1, ..., \tau_{n-1})^T$, $b = (b, ..., b{n-1})^T$, $h = \max_i h_i$.
+
+\begin{proof}[Beweis]
+Sei $j \in \{1, ..., n-1\}$ so, dass $\vert \tau_j \vert = \max_i \vert \tau_i \vert$. Dann gilt:
+\begin{align*}
+2 \left( \frac{1}{h_j} + \frac{1}{h_{j+1}} \right) \tau_j &= -\frac{\tau_{j-1}}{h_j} -\frac{\tau_{j+1}}{h_{j+1}} + b_j &\\
+\Rightarrow 2 \left\vert \frac{1}{h_j} + \frac{1}{h_{j+1}} \right\vert & \leq \left\vert \frac{\tau_{j-1}}{h_j} \right\vert + \left\vert \frac{\tau_{j+1}}{h_{j+1}} \right\vert + \vert b_j \vert &\\
+& \leq \left( \frac{1}{h_j} + \frac{1}{h_{j+1}} \right) \vert \tau_j \vert + \max_i \vert b_i \vert &\\
+\Rightarrow \left( \frac{1}{h_j} + \frac{1}{h_{j+1}} \right) \vert \tau_j \vert &\leq \max_i \vert b_i \vert &\\
+\Rightarrow \max_i \vert \tau_i \vert &= \vert \tau_j \vert \leq \frac{h}{2} \max_i \vert b_i \vert 
+\end{align*}
+\end{proof}
+\end{theorem}
+
+\begin{korollar}
+Die Matrix A aus (12.4) ist invertierbar.
+\begin{proof}[Beweis]
+Die einzige Lösung von $A\tau = 0$ ist $\tau = 0$, $0 \in \mathbb{R}^{n-1}$
+\end{proof}
+\end{korollar}
+
+\begin{korollar}
+Der eingespannte Spline existiert und ist eindeutig.
+\begin{proof}[Beweis]
+Folgt aus (12.5)
+\end{proof}
+\end{korollar}
+
+\subsection{Fehler bei der Splineinterpolation}
+Vorraussetzungen für diesen Abschnitt: \\
+$a = x_0 < x_1 < ... < x_n = b$, \\
+$h_i= x_i-x_{i-1}$, \\
+$h:= \max_i \vert h_i \vert$
+
+\begin{theorem}
+Sei $f \in \mathcal{C}^4([a,b])$, $s$ der eingespannte Spline, d.h. $s'(a) = f'(a)$, $s'(b) = f'(b)$, $s(x_i) = f(x_i)$ für $i=0,...,n$. Dann gilt für $x\in [a,b]$
+$$ \vert f(x) - s(x) \vert \leq \frac{5}{384} h^4 \max_{\xi \in[a,b]} \vert f^{(4)}(\xi) \vert $$
+\begin{proof}[Beweis] Siehe (13.3)
+\end{proof}
+\end{theorem}
+
+\begin{lemma}
+Unter den Vorraussetzungen von (13.1) gilt für  $s'(x_i) = \tau_i$:
+$$ \vert f'(x_i) - \tau_i \vert \leq \frac{h^3}{24} \max_{\xi \in [a,b]} \vert f^{(4)}(\xi) \vert$$
+\begin{proof}[Beweis (für den äquidistanten Fall)]
+Für $i=1, ..., n-1$ erfüllen die $\tau_i$ 
+\begin{align*}
+&\frac{1}{h} (\tau_{i-1} + 4 \tau_i + \tau_{i+1}) = \frac{3}{h^2} (f(x_{i+1}) - f(x_{i-1})) = b_i &\\
+\intertext{Ersetze nun $\tau_i$ durch $f'(x_i)$, so gilt:}
+&\frac{1}{h} (f'(x_{i-1}) + 4f'(x_i) + f'(x_{i+1})) - \frac{3}{h^2} ( f(x_{i+1}) - f(x_{i-1})) =: \delta_j &\\
+\intertext{Taylorentwicklung von $f'(x_{i-1}), f'(x_{i+1}), f(x_{i-1}), f(x_{i+1})$ um $x_i$}
+&f(x_{i+1}) = f(x_i + h) = f(x_i) + hf'(x_i) + \frac{h^2}{2!} f''(x_i) &\\
+& + \frac{h^3}{3!} f'''(x_i) + h^4 \int_0^1 \frac{(1-t)^3}{3!} f^{(4)}(x_i+th) dt &\\
+&f'(x_{i+1}) =  f'(x_i) + hf''(x_i) + \frac{h^2}{2!} f''(x_i) &\\
+&+ h^3 \int_0^1 \frac{(1-t)^2}{2!} f^{(4)}(x_i+th) dt &\\
+\intertext{und analog für $f(x_{i-1}) = f(x_i-h)$ und $f'(x_{i-1})$. $\Rightarrow$}
+\delta_j &= \frac{1}{h} (f'(x_i) - hf''(x_i) + \frac{h^2}{2} f''(x_i) + R_{i-}' &\\
+&\quad + 4 f'(x_i) + f'(x_i) + hf''(x_i) + \frac{h^2}{2} f'''(x_i) + R_{i+}') &\\
+&\quad -\frac{3}{h^2} (f(x_i) + hf'(x_i) + \frac{h^2}{2}f''(x_i) + \frac{h^3}{3!} f'''(x_i) + R_{i+} &\\
+&\quad- f(x_i) + hf'(x_i) - \frac{h^2}{2} f''(x_i) + \frac{h^3}{3!} f'''(x_i) + R_{i-}) &\\
+&= h^2 \int_0^1 \left( \frac{(1-t)^2}{2!} - 3 \frac{(1-t)^3}{3!} \right) f^{(4)}(x+th) dt &\\
+&\quad+ h^2 \int_0^1 \left( \frac{(1-t)^2}{2!} - 3 \frac{(1-t)^3}{3!} \right) f^{(4)}(x-th) dt &\\
+&= h^2 \left( f^{(4)}(\xi_i) + f^{(4)}(\eta_i) \right) \int_0^1 \frac{(1-t)^2}{2} - \frac{(1-t)^3}{2} dt &\\
+&=\frac{h^2}{24} \left(f^{(4)}(\xi_i) + f^{(4)}(\eta_i)\right), \quad \xi_i \in [x_{i-1},x_i], \medspace \eta_i \in [x_i, x_{i+1}] &\\
+\Rightarrow \vert \delta_i \vert &\leq \frac{h^2}{12} \max_{\xi \in [a,b]} \vert f^{(4)}(\xi) \vert
+\intertext{Definiere nun $e_i := f'(x_i) - \tau_i$ für $i=0,...,n$. Diese erfüllen die Bedingung $e_0 = 0, \medspace e_n = 0$ vom eingespannten Spline. Für $f' = (f'(x_1),..., f'(x_{n-1})^T$, $\delta = (\delta_1, ..., \delta_{n-1})^T$ und $e = (e_1, ..., e_{n-1})$ gilt: $A \tau = b$ und $Af' = b+ \delta$. Mit (12.4) gilt dann}
+\max_i \vert e_i \vert & \leq \frac{h}{2} \max_i \vert \delta_i \vert \leq \frac{h^3}{24} \max_{\xi \in [a,b]} \vert f^{(4)}(\xi) \vert 
+\end{align*}
+\end{proof}
+\end{lemma}
+
+\begin{nothing}[Beweis von (13.1)]
+Für $x \in [x_{i-1}, x_i]$ ist $f(x) - s_i(x) = f(x) - p_i(x) + p_i(x) - s_i(x)$, \\
+wobei $p_i$ das kubische Hermiteinterpolationspolynom zu $f$ ist mit \\
+$p_i(x_i) = f(x_i)$, $p_i(x_{i-1}) = f(x_{i-1})$, $p_i'(x_i) = f'(x_i)$, $p_i'(x_{i-1}) = f'(x_{i-1})$\\
+Nach Satz (11.2) gilt für ein $\xi \in [x_{i-1}, x_i]$:
+\begin{align*}
+\vert f(x) - p_i(x) \vert &= \vert (x-x_i)^2(x-x_{i-1})^2 \vert \left\vert \frac{f^{(4)}(\xi)}{24} \right\vert &\\
+& \leq \frac{h^4}{16*24} \vert f^{(4)}(\xi) \vert = \frac{h^4}{384} \vert f^{(4)}(\xi) \vert
+\end{align*}
+Weiter gilt:
+\begin{align*}
+s_i(x) - p_i(x) &= (x-x_{i-1})(x-x_i) ((\tau_i - f'(x_i)) (x-x_{i-1}) &\\
+& \quad +  (\tau_{i-1} - f'(x_{i-1})) (x-x_{i}) ) \frac{1}{h^2}
+\intertext{Da $\frac{(x-x_{i-1})(x-x_i)}{h^2} \leq \frac{1}{4}$ für $x \in [x_{i-1}, x_i]$ gilt mit (13.2)}
+\vert s_i(x) - p_i(x) \vert  &\leq \frac{1}{4} \frac{h^3}{24} \max_{\xi \in [a,b]} \left\vert f^{(4)}(\xi) \right\vert \underbrace{\left( \vert x-x_{i-1} \vert + \vert x-x_i \vert \right)}_{= h} &\\
+& = \frac{h^4}{96} \max_{\xi \in [a,b]} \left\vert f^{(4)}(\xi) \right\vert &\\
+\intertext{Ingesamt gilt also:}
+\vert f(x) - s_i(x) \vert & \leq h^4 \frac{1+4}{384} \max_{\xi \in [a,b]} \left\vert f^{(4)}(\xi) \right\vert
+\end{align*}
+\qed
+\end{nothing}
+
+\begin{comment*}
+Wie wirken sich Störungen/Fehler in den Daten auf den interpolierenden Spline aus? \\
+Gegeben seien $(x_i, y_i)_{i=0}^n$ und $(y_0', y_n')$. Dadurch erhält man einen Spline $s(x)$. \\
+Für Daten $(x_i, \tilde{y}_i)_{i=0}^n$ und $(y_0', y_n')$ erhält man einen Spline $\tilde{s}(x)$. Der Einfachheit halber sind $y_0'$ und $y_n'$ fehlerfrei. \\
+Nun gilt:
+$$s(x) - \tilde{s}(x) = \sum_{i=0}^n (y_i - \tilde{y}_i) l_i(x),$$
+wobei $l_i(x)$ ein kubischer Spline mit 
+$$l_i(x_j) =
+\begin{cases}
+  1 & \text{, falls } i=j \\
+  0 &\text{, sonst} \\
+\end{cases}  $$
+und $l_i'(a) = 0 = l_i'(b)$ ist ("Lagrange-Spline"). \\
+Diese zeigen keine Oszillationen wie Lagrangepolynome auf äquidistanten Stützstellen. Es gilt 
+$$\max_{x \in [a,b]} \vert s(x) - \tilde{s}(x) \vert \leq \Lambda_n \max_i \vert y_i - \tilde{y}_i \vert $$
+mit der Spline Lebesguekonstante 
+$$\Lambda_n = \max_{x \in [a,b]} \sum_{i=0}^n \vert l_i(x) \vert $$
+\underline{Ohne Beweis:} Für äquidistante Verteilungen gilt für Splines $\forall n \in \mathbb{N}: \medspace \Lambda_n \leq 2$
+\end{comment*}
+
+\subsection{Numerische Differentiation}
+\begin{description}
+  \item[Problemstellung:] Zu $f: [a,b] \rightarrow \mathbb{R}$ berechne näherungsweise $f'(x)$ für $x \in [a,b]$:
+  $$f'(x) = \lim_{h \rightarrow 0} \frac{f(x+h) - f(x)}{h}$$
+  Falls $f \in \mathcal{C}^2([a,b])$ gilt:
+  \begin{align*}
+  f(x+h) &= f(x) + hf'(x) + \frac{h^2}{2} f''(\xi), \quad \text{für } \xi \in [a,b] &\\
+  \Rightarrow \frac{f(x+h) - f(x)}{h} &= f'(x) + \frac{h}{2} f''(\xi)
+  \end{align*}
+  Allerdings ist ein Grenzübergang $h \rightarrow 0$ auf einem Computer problematisch, da statt $\frac{f(x+h) - f(x)}{h}$ nur $\frac{f(x+h) - f(x) + \varepsilon}{h}$ berechnet werden kann für ein $\varepsilon < \text{eps}$ (Maschinengenauigkeit) \\
+  $\text{eps} \approx 10^{-16}$
+  \item[Idee:] Um $f'$ zu approximieren, ersetze $f$ durch ein Polynom $p$ oder ein Spline $s$ und approximiere $f'$ durch $s'$ oder $p'$.
+  \item[Berechnung von $p'(x)$:]  Dividierte Differenzen:\\
+  \begin{tabular}{lllllll}
+    $x$ & $p(x) = b_0$ \\
+    &&$b_1$\\
+	$x_0$ & $y_0 = f(x_0)$ && $b_2$\\
+	 & & $\delta^1y[x_0, x_1]$&& $b_3$\\
+	$x_1$ & $y_1 = f(x_1)$ & &$\delta^2y[x_0, x_1, x_2]$  &&$\ddots$\\
+	 & & $\delta^1y[x_1, x_2]$ & & $\delta^3y[x_0, x_1, x_2, x_3]$&& $b_n = \delta^ny[x_0,...,x_n]$\\
+	$x_2$ & $y_2 = f(x_2)$ & & $\delta^2y[x_1, x_2, x_3]$\\
+	 & & $\delta^1y[x_2, x_3]$\\
+	$x_3$ & $y_3 = f(x_3)$ \\
+	$\vdots$ & $\vdots$\\
+	$x_n$ & $y_n = f(x_n)$
+  \end{tabular}\\\\
+  Interpolationspolynom $p \in \mathcal{P}_n$:
+  \begin{align*}
+    p(x) &= \sum_{i=0}^n \prod_{j=0}^{i-1} (x-x_i) \delta^iy[x_0,..., x_i] &\\
+    &= x^n \delta^ny[x_0,..., x_n] + r, \quad \text{für }r \in \mathcal{P}_{n-1} &\\
+    p^{(n)} &= n! \delta^ny[x_0,..., x_n]
+  \end{align*}
+  Füge weitere Diagonale zu Knoten $x$ in obigem Schema hinzu mit $b_0 = p(x)$ und $b_k = \delta^k y[x, x_0, x_1, ..., x_{k-1}]$. Nach Definition ist 
+  $$b_{k+1} = \frac{b_k - \delta^ky[x_0,..., x_k]}{x-x_k}$$
+  Rechne nun im Newtonschema von rechts nach links (da $b_n = \delta^ny[x_0,..., x_n]$).\\
+  $b_n = \delta^ny[x_0,...,x_n]$ für $k= n-1, ..., 0$.\\
+  $b_k = b_{k+1} (x-x_k) + \delta^ky[x_0,...,x_k]$ \\
+  $p(x) = b_0$\\
+  Nach dem Hornerschema.\\
+  Berechne nun die Ableitungen: \\
+  Füge weitere Diagonale zu Knoten $x+ \varepsilon$ hinzu und lasse $\varepsilon \rightarrow 0$ laufen \\
+  \begin{tabular}{lllllll}
+    $x+ \varepsilon$ & $p(x + \varepsilon) = c_0$ \\
+    && $c_1 = p'(x)$ \\
+    $x$ & $p(x) = b_0$ \\
+    &&$b_1$\\
+	$x_0$ & $y_0 = f(x_0)$ && $b_2$&&$\ddots$\\
+	 & & $\delta^1y[x_0, x_1]$&& $b_3$&&$c_n$\\
+	$x_1$ & $y_1 = f(x_1)$ & &$\delta^2y[x_0, x_1, x_2]$  &&$\ddots$ & =\\
+	 & & $\delta^1y[x_1, x_2]$ & & $\delta^3y[x_0, x_1, x_2, x_3]$&& $b_n$\\
+	$x_2$ & $y_2 = f(x_2)$ & & $\delta^2y[x_1, x_2, x_3]$&&& =\\
+	 & & $\delta^1y[x_2, x_3]$&&&& $\delta^ny[x_0,...,x_n]$\\
+	$x_3$ & $y_3 = f(x_3)$ \\
+	$\vdots$ & $\vdots$\\
+	$x_n$ & $y_n = f(x_n)$
+  \end{tabular}\\\\
+  \underline{Algorithmus zur Berechnung von $p'(x)$:}
+  \begin{algorithmic}
+  \STATE $c_n = b_n$
+  \FOR{$k = n-1, ...,1$}
+  	\STATE $c_k = b_k + (x-x_{k-1})c_{k+1}$
+  \ENDFOR
+  \STATE $p'(x) = c_1$
+  \end{algorithmic}
+\end{description}
+
+\begin{theorem}
+Sei $f \in \mathcal{C}^{n+2}([a,b])$, $p$ Interpolationspolynom zu $f$ in $x_0,..., x_n \in [a,b]$ paarweise verschieden ($p\in \mathcal{P}_n$). \\
+$\forall x \in [a,b] \medspace \exists \xi, \xi' \in [a,b]:$ 
+$$f'(x) - p'(x) = \left( \sum_{i=0}^n \prod{j=0, \medspace j \neq i}^n (x-x_j) \frac{f^{(n+1)(\xi)}}{(n+1)!}\right) + \prod_{j=0}^n (x-x_j) \frac{f^{(n+2)}(\xi')}{(n+2)!}$$
+\begin{proof}[Beweisskizze] (vgl. 9.1) \\
+Sei \={x} fest aber beliebig, $\bar{p}$ das Hermiteinterpolationspolynom zu 
+\begin{description}
+  \item $\bar{p}(x_i) = f(x_i), \quad i=0,...,n$
+  \item $\bar{p}(x) = f(x),$
+  \item $\bar{p}'(x) = f'(x)$
+\end{description}
+Newtonschema und Newtoninterpolationspolynome liefert das Ergebnis.
+\end{proof}
+\end{theorem}
 \end{document}
