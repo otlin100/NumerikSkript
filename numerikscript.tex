@@ -650,7 +650,7 @@ Newtonsche Interpolationsformel:
 p_{\varepsilon}(x) = y_0 &+ (x-x_0) \delta y[x_0, x_0+\varepsilon] &\\
 &+ (x-x_0)(x-(x_0 + \varepsilon)) \delta^2y[x_0, x_0 + \varepsilon, x_1] &\\
 &+ \dots &\\
-&+ \left( \prod_{j=0}^{n-1} (x-x_j)(x-(x_j + \varepsilon))(x-x_1) \dots \delta^{2n+1} y[x_0,\dots, x_1]\right)
+&+ \left( \prod_{j=0}^{n-1} (x-x_j)(x-(x_j + \varepsilon))\right)(x-x_n)\delta^{2n+1} y[x_0,\dots, x_n + \varepsilon]
 \end{align*}
 damit ist:
 \begin{align*}
