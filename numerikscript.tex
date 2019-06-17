@@ -36,6 +36,7 @@
 \newtheorem*{example*}{Beispiel}
 \newtheorem{problem}[theorem]{Problem}
 \newtheorem{example}[theorem]{Beispiel}
+\newtheorem{properties}[theorem]{Eigenschaften}
 \newtheorem{nothing}[theorem]{}
 
 \author{Prof. Schaedle}
@@ -550,7 +551,7 @@ p(x) &= \frac{1}{2} c_0 + \sum_{l=1}^n c_l T_l(x) &\\
 &= \frac{1}{2} c_0 + \sum_{l=1}^{n-3} c_l T_l(x) + (c_{n-2} - \underbrace{c_n}_{=d_n}) T_{n-2}(x) + \underbrace{(c_{n-1} + 2xc_n)}_{=d_{n-1}} T_{n-1}(x) &\\
 &= \frac{1}{2} c_0 + \sum_{l=1}^{n-4} c_l T_l(x) + (c_{n-3} - d_{n-1}) T_{n-3}(x) + \underbrace{(c_{n-2} - d_n + 2xd_{n-1})}_{=d_{n-2}} T_{n-2}(x) &\\
 \intertext{induktiv erhält man}
-&= (\frac{1}{2} c_0 - d_2) \underbrace{T_0(x)}_{=1} + \underbrace{(c_1 - d_3 + 2xd_2)}_{=d_1} \underbrace{T_1(x)}_{=x} &\\
+&= \left(\frac{1}{2} c_0 - d_2\right) \underbrace{T_0(x)}_{=1} + \underbrace{(c_1 - d_3 + 2xd_2)}_{=d_1} \underbrace{T_1(x)}_{=x} &\\
 &= \frac{1}{2} (\underbrace{c_0 - 2d_1x - d_2}_{=d_0} -d_2) &\\
 &= \frac{1}{2} (d_0-d_2)
 \end{align*}
@@ -608,8 +609,8 @@ Das Problem $\ln(x)$ zu berechnen ist damit auf das Problem $\ln(1+t)$ für $t \
 Tschebyscheffinterpolation: $[-1, 1] \rightarrow [0,1], \medspace x \mapsto t = \frac{1+x}{2} \quad (\Leftrightarrow x=2t-1)$ \\
 Für den Interpolationsfehler gilt:
 \begin{align*}
-\ln(1+ \frac{1+x}{2}) -p(x) &= \underbrace{\prod_{j=0}^n (x-x_j)}_{=2^{-n} \text{ für Tschebyscheff}} \frac{1}{(n+1)!} \frac{(-1)^{n-1} (n-1)!}{(1+\frac{1+\xi}{2})^n} \left(\frac{1}{2}\right)^n, \quad \xi \in [-1, 1] &\\
-\Leftrightarrow \quad \vert \ln(1+ \frac{1+x}{2}) -p(x) \vert &= \frac{1}{4^n} \frac{1}{(n+1)^n}
+\ln\left(1+ \frac{1+x}{2}\right) -p(x) &= \underbrace{\prod_{j=0}^n (x-x_j)}_{=2^{-n} \text{ für Tschebyscheff}} \frac{1}{(n+1)!} \frac{(-1)^{n-1} (n-1)!}{\left(1+\frac{1+\xi}{2}\right)^n} \left(\frac{1}{2}\right)^n, \quad \xi \in [-1, 1] &\\
+\Leftrightarrow \quad \left\vert \ln\left(1+ \frac{1+x}{2}\right) -p(x) \right\vert &= \frac{1}{4^n} \frac{1}{(n+1)^n}
 \end{align*}
 Für n=15 ist $\frac{1}{4^n} \frac{1}{(n+1)^n} \leq 10^{-11}$ \\
 Berechnet werden also $c_0,..., c_{15}$ (einmal für alle Zeiten):
@@ -623,7 +624,7 @@ c_4 &= -0.00004 &\\
 \end{align*}
 Beobachtung: $c_k$ werden schnell klein.\\
 Um eine Genauigkeit von $10^{-8}$ (einfache Genauigkeit) zu erreichen, benötigt man nur $c_0,..., c_9$.\\
-Die Auswertung mit dem Clenshaw-Algorithmus benötigen wir 10 Multiplikation (vgl. Taylor $\log(1+t) = \sum_{k=1}^{\infty} \frac{(-1)^k}{k}t^k$)
+Die Auswertung mit dem Clenshaw-Algorithmus benötigen wir 10 Multiplikation $\left(\text{vgl. Taylor }\log(1+t) = \sum_{k=1}^{\infty} \frac{(-1)^k}{k}t^k\right)$.
 \end{example}
 
 \subsection{Hermit\'{e}-Interpolation}
@@ -727,7 +728,7 @@ Spline ist engl. für Holz- oder Metallfeder.\\
   \item[ii)] $s$ muss mind. 2-mal stetig differenzierbar sein und $ \int_a^b (s''(x))^2dx $ soll minimal sein. 'glatt'
 \end{enumerate}
 Dadurch vermeidet man Oszillationen, wie sie bei der Polynominterpolation hohen Grades entstehen.\\
-Wir suchen also eine Funktion $s$, sodass für $\varepsilon \in \mathbb{R}$ und $h \in \mathcal{C}^1([a,b], \mathbb{R})$, $h(x_i) = 0 \medspace (i=,...,n)$ und 
+Wir suchen also eine Funktion $s$, sodass für $\varepsilon \in \mathbb{R}$ und $h \in \mathcal{C}^2([a,b], \mathbb{R})$, $h(x_i) = 0 \medspace (i=0,\ldots,n)$ und 
 \begin{align*}
 \int_a^b (s''(x))^2 dx &\overset{!}{\leq} \int_a^b \left( (s(x) + \varepsilon h(x))'' \right)^2 dx &\\
 &= \int_a^b (s''(x) + \varepsilon h''(x))^2 dx &\\
@@ -1062,7 +1063,7 @@ Newtonschema und Newtoninterpolationspolynome liefert das Ergebnis.
 \begin{enumerate}
   \item[a)] Splineinterpolation $A\tau = b$, $A$ tridiagonal und symmetrisch.
   \item[b)] Computertomographie \\
-    %\includegraphics[width=11cm]{Bild1.png}\\
+%    \includegraphics[width=11cm]{Bild1.png}\\
     $\Delta I$: gemessener Intensitätsunterschied zwischen Quelle und Detektor \\
     $\Delta I = \int_{[a,b]} \alpha(x) dx$\\
     Dabei ist $\alpha(x)$ der Absorptionskoeffizient\\
@@ -1070,7 +1071,7 @@ Newtonschema und Newtoninterpolationspolynome liefert das Ergebnis.
     $\Delta I = \sum_{j \in \text{Voxel}} \alpha_j l_j$\\
     $l_j$: Länge des Weges $[a,b]$ in Voxel $j$\\
     Viele Strahlen: $L_j(t) = \omega ( \varphi_j ) s_j + \omega^{\perp} ( \varphi_j ) t$\\
-    %\includegraphics[width=8cm]{Bild2.png}\\
+%    \includegraphics[width=8cm]{Bild2.png}\\
     $\omega(\varphi_j) = (\cos(\varphi_j), \sin(\varphi_j))$\\
     $\omega^{\perp}(\varphi_j) = (-\sin(\varphi_j), \cos(\varphi_j))$ \\\\
     $\begin{bmatrix} 
@@ -1165,7 +1166,7 @@ r_{11} & r_{12} & \dots & r_{1n} \\
 \end{bmatrix}$$
 und $P$ eine Permutationsmatrix ist.
 \begin{proof}[Beweis]
-Nehme an, dass die notwendige Zeilenvertauschungen bereits durchgeführt wurden, d.h. ersetze $A$ durch $PA$ (Zeilen und Spalten von $P$ bestehen aus kanonischen Einheitsvektoren z.B. $ P = \begin{bmatrix} 0&1&0&\\1&0&0&\\0&0&1&\\ \end{bmatrix}$)\\
+Nehme an, dass die notwendige Zeilenvertauschungen bereits durchgeführt wurden, d.h. ersetze $A$ durch $PA$ (Zeilen und Spalten von $P$ bestehen aus kanonischen Einheitsvektoren z.B. $P = \left(\begin{smallmatrix} 0&1&0&\\1&0&0&\\0&0&1&\\ \end{smallmatrix}\right)$\Big). \\
 Bezeichne mit $L_i \in \mathbb{R}^{n\times n}$:
 $$L_i = 
 \begin{bmatrix}
@@ -1265,11 +1266,11 @@ Durch den Computer kommen folgende Einschränkungen hinzu:
   \item[Beispiel] $\thinspace$\\
     Betrachte den Standard IEEE 754.\\
     Dieser stellt eine Zahl mit einfacher Genauigkeit dar zur Basis $B=2$ mit $l=32$ und $[e_{\min}, e_{\max}] = [-128, 127]$.
-%    \begin{figure}[!htb]
-%      \centering
+    \begin{figure}[!htb]
+      \centering
 %      \includegraphics[width=10cm]{Bild3.png}
-%      \caption{From https://de.wikipedia.org/wiki/IEEE\_754}
-%    \end{figure}\\
+      \caption{From https://de.wikipedia.org/wiki/IEEE\_754}
+    \end{figure}\\
     Der Wert lässt sich berechnen aus
     $$(-1)^{\sigma} * (1,m) * 2^{\sum_{j} e_j^{2^j} - 127}$$
     Dabei ist $m$ binär dargestellt.
@@ -1570,7 +1571,7 @@ die von den Vektorraumnormen induzierte Norm. Schreibe einfach nur $\Vert \cdot 
 Sei $A \in \mathbb{R}^{n\times m}$, $\alpha \in \mathbb{R}$ Es gilt für die in (18.3) definierte Matrixnorm
 \begin{enumerate}
   \item[i)] $\forall x \in \mathbb{R}^n: \medspace \Vert Ax \Vert \leq \Vert A \Vert \Vert x \Vert$ \\
-  $\Vert A \Vert$ ist die kleinste Zahl mit dieser Eigenschaft
+  $\Vert A \Vert$ ist die kleinste Zahl mit dieser Eigenschaft.
   \item[ii)] Es gilt $\Vert A \Vert \geq 0$. Weiter gilt $\Vert A \Vert = 0 \Rightarrow \medspace A = 0$
   \item[iii)] $\Vert \alpha A \Vert = \vert \alpha \vert \Vert A \Vert$
   \item[iv)] $\Vert A + B \Vert \leq \Vert A \Vert + \Vert B \Vert$.\\
@@ -1677,7 +1678,7 @@ Falls
 $$ \frac{\Vert A - \tilde{A} \Vert}{\Vert A \Vert} \leq \varepsilon_A, \quad \frac{\Vert b - \tilde{b} \Vert}{\Vert b \Vert} \leq \varepsilon_b$$
 so gilt für die Lösung des LGS:
 $$\frac{\Vert \tilde{x} - x \Vert }{\Vert x \Vert} \leq \frac{\text{cond($A$)}}{1- \varepsilon_A \text{cond($A$)}}(\varepsilon_A + \varepsilon_b)$$
-falls $\varepsilon_A \text{cond($A$)} < 1$. Hierbei ist $\text{cond($A$)} = \Vert A \Vert \Vert A^-1 \Vert$ die Konditionszahl von $A$ und die Matrixnorm wird von der Vektorraumnorm induziert (vgl. 18.3)
+falls $\varepsilon_A *\text{cond($A$)} < 1$. Hierbei ist $\text{cond($A$)} = \Vert A \Vert \Vert A^-1 \Vert$ die Konditionszahl von $A$ und die Matrixnorm wird von der Vektorraumnorm induziert (vgl. 18.3)
 \begin{proof}[Beweis]
 \begin{align*}
 b - \tilde{b} &= Ax - \tilde{A}\tilde{x} &\\
@@ -1690,5 +1691,434 @@ b - \tilde{b} &= Ax - \tilde{A}\tilde{x} &\\
 \end{align*}
 \end{proof}
 \end{theorem}
+
+\begin{comment}
+Die Abschätzung aus (20.1) ist scharf, d.h. es gibt $\tilde{A}$ und $\tilde{b}$, sodass Gleichheit gilt. Aber sie ist oft zu pessimistisch für Rundungsfehlerabschätzungen.
+\begin{description}
+  \item[Beispiel:] Betrachte folgendes Gleichungssystem: 
+    \begin{align*}
+    \underbrace{\left( \begin{matrix}
+    1 & 1 \\
+    0 & 10^{-8} \\
+    \end{matrix} \right)}_A
+    \left( \begin{matrix}x_1\\x_2\end{matrix} \right)
+    =
+    \left( \begin{matrix}b_1\\b_2\end{matrix} \right)
+    \end{align*}
+    Sei des Weiteren $\vert \varepsilon_j \vert < eps$. \\
+    Es gilt $\text{cond}_{\infty}(A) = \Vert A \Vert_{\infty} \Vert A^{-1} \Vert_{\infty} = 2 * 10^8$. Das gestörte System ist nun:
+    \begin{align*}
+    (1+ \varepsilon_1) \tilde{x}_1 + (1 + \varepsilon_2) \tilde{x}_2 &= \overbrace{b_1 ( 1+ \varepsilon_3)}^{= \tilde{b}_1} &\\
+    (1+\varepsilon_4) 10^{-8} \tilde{x}_2 &= b_2(1+\varepsilon_5)
+    \end{align*}
+    
+    \begin{align*}
+    \intertext{Mit $\frac{1}{1+\varepsilon} = 1 - \varepsilon + \varepsilon^2 - \varepsilon^3 + \varepsilon^4 - ...$ folgt}
+    &\Rightarrow \tilde{x}_2 = 10^8 b_2 \frac{1+\varepsilon_5}{1+\varepsilon_4} = 10^8 b_2(1+\varepsilon_5 - \varepsilon_4) + \mathcal{O}(eps^2) &\\
+    &\Rightarrow \frac{\vert x_2 - \tilde{x}_2 \vert}{\vert x_2 \vert} \leq 2 eps 
+    \end{align*}
+    
+    \begin{alignat*}{2}
+    &\tilde{x}_1 &&= [b_1(1+\varepsilon_3) - x_2(1+\varepsilon_5 - \varepsilon_4 + \varepsilon_3)] (1-\varepsilon_1) + \mathcal{O}(eps^2) \\
+    & &&= [x_1 + \underbrace{b_1}_{=x_1 + x_2} \varepsilon_3 - x_2(\varepsilon_5 - \varepsilon_4 + \varepsilon_2)] (1-\varepsilon_1) + \mathcal{O}(eps^2)
+    \end{alignat*}
+    
+    \begin{align*}
+    &\tilde{x}_1-x_1 = x_1(-\varepsilon_1 + \varepsilon_3) - x_2(-\varepsilon_3 + \varepsilon_5 - \varepsilon_4 + \varepsilon_2) + \mathcal{O}(eps^2)&\\
+    &\frac{\vert \tilde{x}_1 - x_1 \vert}{\vert x_1 \vert} \leq ( 2 + 4 \frac{\vert x_2 \vert}{\vert x_1 \vert} ) eps
+    \end{align*}
+    Dieser Wert kann sehr groß werden für $\frac{\vert x_2 \vert}{\vert x_1 \vert} \rightarrow \infty$, aber $\frac{\vert \tilde{x}_1 - x_1 \vert}{\Vert x_1 \Vert_{\infty}} \leq 6eps$.
+\end{description} 
+\end{comment}
+
+\begin{lemma}
+Sei $A \in \mathbb{R}^{n \times n}$ invertierbar. Dann gilt:
+\renewcommand{\labelenumi}{\roman{enumi})}
+\begin{enumerate}
+  \item $\text{cond}(A) \geq 1$
+  \item $\forall \alpha \in \mathbb{R}\setminus \{0\}: \medspace \text{cond}(\alpha A) = \text{cond}(A)$
+  \item $ \text{cond}(A) = \frac{\max_{\Vert y \Vert = 1} \Vert Ay \Vert}{\min_{\Vert x \Vert = 1} \Vert A^{-1}x \Vert}$
+\end{enumerate}
+\begin{proof}[Beweis]
+Übungsaufgabe.
+\end{proof}
+\end{lemma}
+
+\begin{example}\leavevmode
+\renewcommand{\labelenumi}{\theenumi) }
+\begin{enumerate}
+  \item Matrizen mit kleiner Konditionszahl:
+    \begin{itemize}
+      \item $I$ mit $\text{cond}(I) = 1$
+      \item orthogonale Matrizen $Q$ ($Q^TQ = I$)
+        \begin{align*}
+        &{\Vert Qx \Vert_2}^2 = x^TQ^T Q x = x^Tx = {\Vert x \Vert_2}^2 \Rightarrow \Vert Q \Vert_2 = 1 &\\
+        & Q^{-1} = Q^T \Rightarrow \Vert Q^{-1} \Vert_2 = 1 \Rightarrow \text{cond}_2(Q) = 1
+        \end{align*}
+      \item Splineinterpolationsmatrix ($h_i = h$)
+        \begin{align*}
+        &A = \frac{1}{h} \left[ \begin{matrix} 4 & 1 & & 0 \\ 1 & \ddots & \ddots \\  & \ddots & & 1 \\ 0 & & 1 & 4\end{matrix} \right], \quad \Vert A \Vert_{\infty} = 6 &\\
+        &A = 4(I+N) \quad \text{mit } N = \left[ \begin{matrix} 0 & \nicefrac{1}{4} & & 0 \\ \nicefrac{1}{4} & \ddots & \ddots \\  & \ddots & & \nicefrac{1}{4} \\ 0 & & \nicefrac{1}{4} & 0 \end{matrix} \right] &\\
+        &A^{-1} = \nicefrac{1}{4}(I+N)^{-1} = \nicefrac{1}{4} (I-N+N^2-N^3 + ...), \quad \Vert N \Vert_{\infty} = \nicefrac{1}{2} &\\
+        &\Vert A ^{-1} \Vert \leq \nicefrac{1}{4}(\Vert I \Vert + \Vert N \Vert + \Vert N \Vert ^2 + ...) = \nicefrac{1}{2}
+        \end{align*}
+    \end{itemize}
+  
+  \item Matrizen mit großer Konditionszahl: 
+    \begin{itemize}
+      \item Hilbertmatrix $H = \left(\frac{1}{i+j-1}\right)_{i,j=1}^n$
+        $$ H = \left[ \begin{matrix}1 & \nicefrac{1}{2} & \nicefrac{1}{3} & \nicefrac{1}{4} & \dots \\ \nicefrac{1}{2} & \nicefrac{1}{3} & \nicefrac{1}{4} \\ \nicefrac{1}{3} & \nicefrac{1}{4} \\ \nicefrac{1}{4} \\ \vdots \end{matrix} \right]$$
+        Für $n \in \{1,..., 10\}$ ergibt sich folgende Tabelle:\\
+        \begin{tabular}{c|c}
+        $n$ & $\text{cond}_2(A)$ \\
+        \hline
+        1 & 1 \\
+        2 & 27 \\
+        3 & 740 \\
+        4 & 2300 \\
+        \vdots & \vdots \\
+        10 & $35 * 10^{13}$
+        \end{tabular}
+    \end{itemize}
+\end{enumerate}
+\end{example}
+
+\subsection{Stabilität von Verfahren}
+\begin{definition}
+Ein Verfahren zur Auswertung eines Problems $f$ ist die Hintereinanderausführung von elementaren Operationen $\tilde{f}_k$ \\
+$\tilde{f} = \tilde{f}_n \circ \tilde{f}_{n-1} \circ ... \circ \tilde{f}_1, \quad \tilde{f}_k \in \{ +, -, *, /, fl, \sqrt{\cdot}, ...\} $
+\end{definition}
+
+\begin{definition}
+Ein Verfahren zur Auswertung des Problems $f$ ist stabil im Sinne der Vorwärtsanalysis, falls 
+$$\tilde{f}(x) - f(x) \Vert < C * eps *  \Vert f(x) \Vert$$
+für eine nicht zu große Konstante $C$.
+\end{definition}
+
+\begin{example}
+Berechnung von $\frac{1}{x(x-1)}$ für $x = 10^4$.
+\renewcommand{\labelenumi}{\theenumi) }
+\begin{enumerate}
+  \item
+    \begin{tabular}{ccccccc}
+    &\rotatebox[origin=r]{30}{$\rightarrow$} & $fl(x)$ & \rotatebox[origin=l]{-30}{$\rightarrow$} \\
+    x &&&&$fl(x(x-1))$& $\rightarrow$ & $fl(\frac{1}{x(x-1)})$ \\
+    &\rotatebox[origin=r]{-30}{$\rightarrow$} & $fl(x-1)$ & \rotatebox[origin=l]{30}{$\rightarrow$} 
+    \end{tabular}
+    
+  \item
+    \begin{tabular}{cccccccc}
+    &\rotatebox[origin=r]{30}{$\rightarrow$} & $fl(x)$ & $\rightarrow$ & $fl(\frac{1}{x})$ & \rotatebox[origin=l]{-30}{$\rightarrow$} \\
+    x &&&&&& $fl(-\frac{1}{x} + \frac{1}{x-1})$ \\
+    &\rotatebox[origin=r]{-30}{$\rightarrow$} & $fl(x-1)$ & $\rightarrow$ & $fl(\frac{1}{x-1})$ & \rotatebox[origin=l]{30}{$\rightarrow$} 
+    \end{tabular}
+\end{enumerate}
+Verfahren 2) ist nicht stabil, da $\frac{1}{x} \approx \frac{1}{x-1}$, falls $x=10^4$ gilt und die Subtraktion im letzten Schritt schlecht konditioniert ist. 
+\end{example}
+
+\begin{definition}
+Ein Verfahren $\tilde{f}$ zur Auswertung eines Problems $f$ ist stabil im Sinne der Rückwärtsanalysis, falls für jedes $x \in X$ ein $\tilde{x} \in X$ existiert, sodass
+$$ \tilde{f}(x) = f(\tilde{x}) \quad \text{mit } \frac{\Vert \tilde{x} - x \Vert }{\Vert x \Vert} \leq C*eps$$
+für eine nicht zu große Konstante $C$. Die berechnete Lösung $\tilde{f}(x)$ kann als exakte Lösung eines benachbarten Problems $f(\tilde{x})$ aufgefasst werden.
+\end{definition}
+
+\begin{example}
+Zur Berechnung von $x_1x_2 + x_3x_4$ verwendet man:\\
+\begin{tabular}{ccccc}
+&\rotatebox[origin=c]{30}{$\underrightarrow{\cdot}$} & $x_1x_2$ & \rotatebox[origin=l]{-30}{$\rightarrow$} \\
+$(x_1, x_2, x_3, x_4)$ & & & + & $x_1x_2 + x_3x_4$ \\
+&\rotatebox[origin=c]{-30}{$\overrightarrow{\cdot}$} & $x_1x_2$ & \rotatebox[origin=l]{30}{$\rightarrow$} \\
+\end{tabular}\\
+und erhält unter Berücksichtigung von Rundungsfehlern\\
+$$\left[(x_1 ( 1 + \varepsilon_1) x_2(1+\varepsilon_2))(1+\eta_1) + (x_3(1+\varepsilon_3)x_4(1+\varepsilon_4))(1+\eta_2)\right](1+\eta_3) \quad \text{für $\vert \varepsilon_j \vert, \vert \eta_j \vert \leq eps$}$$
+Das ist das exakte Ergebnis für 
+\begin{flalign*}
+&\tilde{x}_1 = x_1(1+ \varepsilon_1)(1+\eta_1)(1+\eta_3)&\\
+&\tilde{x}_2 = x_2(1+ \varepsilon_2)(1+\eta_1)(1+\eta_3)&\\
+&\tilde{x}_3 = x_3(1+ \varepsilon_3)(1+\eta_2)(1+\eta_3)&\\
+&\tilde{x}_4 = x_4(1+ \varepsilon_4)(1+\eta_2)(1+\eta_3)
+\end{flalign*}
+Die Konstante $C$ in (21.4) ist etwa 3, wenn man Produkte von $\varepsilon_j$ und $\eta_j$ vernachlässigt. Das Verfahren ist also rückwärtsstabil, auch wenn evtl. das Problem schlecht konditioniert ist.
+\end{example}
+
+\begin{theorem}[Stabilität der Gaußelimination (LR-Zerlegung)]
+Sei $A \in \mathbb{R}^{n \times n}$ invertierbar und $\hat{L}\hat{R}$ das rundungsfehlerbehaftete Ergebnis der Gaußelimination mit Pivotisierung, sodass $\vert \hat{l}_{ij} \vert \leq 1$ für alle $i,j \in \{1,..., n\}$. \\
+Dann gilt für $\hat{A} = (\hat{a}_{ij})_{i,j=1}^n = \hat{L}\hat{R}$:
+$$\vert a_{ij} - \hat{a}_{ij} \vert \leq 2 \max_{i,j,k} \vert a_{ij}^{(k)} \vert * \min\{i-1, j\} * eps$$
+für Maschinengenauigkeit $eps$.
+\begin{proof}[Beweis]
+Im k-ten Schritt berechnet man ausgehend von $\hat{a}_{ij}^{(k-1)}$
+\begin{align*}
+\hat{a}_{ij}^{(k)} &= \left( \hat{a}_{ij}^{(k-1)} - \hat{l}_{ik} \hat{a}_{kj}^{(k-1)} ( 1+ \varepsilon_{ijk}) \right) ( 1+ \eta_{ijk}) &\\
+&= \hat{a}_{ij}^{(k-1)} - \hat{l}_{ik} \hat{a}_{kj}^{(k-1)} + \mu_{ijk} \quad (*)
+\end{align*}
+mit $\vert \varepsilon_{ijk} \vert, \vert \eta_{ijk} \vert \leq eps$ und $\mu_{ijk} \leq \vert \hat{a}_{ij}^{(k-1)} \vert \vert \eta_{ijk} \vert + \vert \hat{l}_{ik} \vert \vert \hat{a}_{kj}^{(k-1)} \vert \vert \varepsilon_{ijk} \vert + \mathcal{O}(eps^2). \quad (**)$\\
+Nach Definition von $\hat{A}$ ist 
+$$\hat{a}_{ij} = \sum_{k=1}^{\min\{i,j\}} \hat{l}_{ik} \hat{r}_{kj} = \sum_{k=1}^{\min\{i,j\}} \hat{l}_{ik} \hat{a}_{kj}^{(k-1)}$$ 
+Verwendet man für $i > j$ (*), so erhält man
+$$\hat{a}_{ij} = \sum_{k=1}^j \left( \hat{a}_{ij}^{(k-1)} - \hat{a}_{ij}^{(k)} + \mu_{ijk} \right) = a_{ij} + \sum_{k=1}^j \mu_{ijk}, \quad \text{da } a_{ij}^{(j)} = 0$$
+Für $i \leq j $ erhält man
+$$\hat{a}_{ij} = \sum_{k=1}^{i-1} \left( \hat{a}_{ij}^{(k-1)} - \hat{a}_{ij}^{(k)} + \mu_{ijk} \right) + \hat{l}_{ii} a_{ij}^{(i-1)}= a_{ij} + \sum_{k=1}^{i-1} \mu_{ijk}, \quad \text{da } \hat{l}_{ii} = 1$$
+Zusammen mit (**) folgt die Behauptung.
+\end{proof}
+\end{theorem}
+
+\begin{comment*}
+Aus dem Satz (21.6) kann man entnehmen, dass die Gaußelimination im Sinne der Rückwärtsanalysis stabil ist, falls 
+$$\frac{\max_{i,j,k} \vert a_{ij}^{(k)}}{\max_{i,j} \vert a_{ij} \vert }$$
+nicht zu groß wird. Dieser Quotient ist meistens klein. Mehr kann man nicht beweisen.
+\end{comment*}
+
+\subsection{QR-Zerlegung mit Hilfe der Householdertransformationen}
+\underline{Ziel:} Konstruiere zu einer gegebenen Matrix $A \in \mathbb{R}^{m \times n}$ ($m \geq n$) eine Zerlegung $A=QR$ mit einer orthogonalen Matrix $Q \in \mathbb{R}^{m \times m}$ ($Q^TQ = I_m$) und 
+$$R = \underbrace{\left[ \begin{matrix} \tilde{R} \\ \hline 0\end{matrix} \right]}_{n}\begin{array}{l} \}n \\ \} m-n\end{array}$$
+Dabei ist $\tilde{R} \in \mathbb{R}^{n \times n}$ eine obere Dreiecksmatrix.\\
+\underline{Anwendungen:}
+\renewcommand{\labelenumi}{\alph{enumi})}
+\begin{enumerate}
+  \item $m=n$, $Ax = b$, $Qc = b$, $Rx=c$, $Q^{-1} = Q^T$. Besonders stabiler Algorithmus (stabiler als Gauß). Dafür doppelt so teuer.
+  \item $m>n$ $\rightarrow$ lineare Ausgleichsrechnung (siehe \S 23)
+  \item QR-Algorithmus zur Berechnung von Eigenwerten (siehe Numerik II)
+\end{enumerate}
+
+\begin{definition}
+Für $v \in \mathbb{R}^m$, $\Vert v \Vert_2 = 1$ heißt
+$$Q = I - 2 v v^T$$
+\textbf{Householderreflexion} zum Vektor $v$.
+\end{definition}
+
+\begin{theorem}
+Für eine Householderreflexion $v \in \mathbb{R}^m$, $\Vert v \Vert_2 = 1$, $Q = I - 2 v v^T$ gilt:
+\renewcommand{\labelenumi}{\roman{enumi})}
+\begin{enumerate}
+  \item $Q$ ist symmetrisch
+  \item $Q$ ist orthogonal
+  \item $Qv = -v$
+  \item $Qw = w$ für alle $w \in \mathbb{R}^{m}$ mit $w^Tv = 0$
+\end{enumerate}
+Mit iii) und iv) erhält man, dass $Q$ eine Spiegelung an der Hyperebene $\{x\in \mathbb{R}^m: x^Tv = 0 \}$ ist.
+\begin{proof}[Beweis]\leavevmode
+\renewcommand{\labelenumi}{\roman{enumi})}
+\begin{enumerate}
+  \item $Q^T = (I-2vv^T)^T = I-2vv^T = Q$
+  \item $Q^TQ \overset{i)}{=} (I-2vv^T)(I-2vv^T) = I - 4 v v^T + t v \underbrace{(v^Tv)}_{=1}v^T = I$ 
+  \item $Qv = (I-2vv^T)v = v - 2v \underbrace{v^Tv}_{=1} = - v$
+  \item $Qw = (I-2vv^T)w = w - 2v\underbrace{v^Tw}_{=0} = w$
+\end{enumerate}
+\end{proof}
+\end{theorem}
+
+\begin{nothing}[Algorithmus der QR-Zerlegung]
+Sei $A = \left[ \begin{matrix} \vdots & \vdots & & \vdots \\ a_1 & a_2 & \dots & a_n \\ \vdots & \vdots & & \vdots \end{matrix} \right]$ mit $a_j$ als die j-te Spalte von $A$.
+\renewcommand{\labelenumi}{\theenumi) }
+\begin{enumerate}
+  \item Suche $Q_1a_1 = \left[ \begin{matrix} \alpha_1 \\ 0 \\ \vdots \\ 0 \end{matrix} \right] = \alpha_1 e_1$\\
+  Da $Q_1$ orthogonal ist, gilt ${\Vert a_1 \Vert_2}^2 = {\Vert Q_1a_1 \Vert_2}^2 = \vert \alpha_1 \vert ^2$\\
+  $\Rightarrow \quad \alpha_1 = \pm {\Vert a_1 \Vert _2}$ (Vorzeichen noch nicht fest)\\
+  $Q_1a_1 = \alpha_1e_1$ \\
+  $Q_1a_1 = (I-2u_1u_1^T)a_1 = a_1 - 2u_1 \underbrace{u_1^Ta_1}_{\in \mathbb{R}}$\\
+  $\Rightarrow$ $u_1$ ist ein Vielfaches von $a_1 - \alpha_1 e_1$\\
+  Mit der Forderung $\Vert u_1 \Vert_2. = 1 $ ergibt sich
+  $$u_1 = \frac{a_1 - \alpha_1e_1}{\Vert a_1 - \alpha_1e_1 \Vert_2}$$
+  Dabei ist ${\Vert a_1 - \alpha_1e_1 \Vert_2}^2 = \underbrace{{\Vert a_1 \Vert_2}^2}_{=\alpha_1^2} - 2 \alpha_1 \underbrace{e_1^Ta_1}_{a_{11}} + \alpha_1^2 = 2 \alpha_1 ( \alpha_1 - a_{11})$
+  Man wählt das Vorzeichen von $\alpha_1$ so, dass keine Stellenauslöschung bei der Berechnung von $\alpha_1 - a_{11}$ auftritt
+  $$\alpha_1 = -\text{sgn}(a_{11}) \Vert a_1 \Vert_2$$
+  Es ist dann 
+  $$Q_1A= A^{(1)} = \left[ \begin{array}{c|c} \alpha_1 & * \\ \hline 0 \\ \vdots & B \\ 0 \end{array} \right]$$
+  wobei die j-te Spalte von $A^{(1)}$ (Nenne diese $a_j^{(1)}$) durch
+  $$a_j^{(1)} = Q_1a_j = a_j - \frac{2 v_1^Ta_j}{v_1^Tv_1} v_1, \quad j = 2,..,n$$
+  für $v_1 = a_1 - \alpha_1e_1$ gegeben ist. Weiter gilt
+  $$ \frac{v_1^Tv_1}{2} = \frac{1}{2} {\Vert a_1 - \alpha_1 e_1 \Vert_2}^2 = \alpha_1(\alpha_1 - a_{11})$$
+  Bemerkung: Zur Berechnung von $Q_1A$ reicht es $v_1$ und $\alpha$ zu kennen. Die Matrix $Q_1 = I-2u_1u_1^T$ wird nicht aufgestellt.
+  
+  \item Suche nun $\tilde{Q}_2 = I_{m-1} - 2 u_2 u_2^T$ mit $u_2 \in \mathbb{R}^{m-1}$, sodass $\tilde{Q}_2 b_1 = \alpha_2 e_1$ ($e_1 \in \mathbb{R}^{m-1}$).\\
+  Für $Q_2 = \left[ \begin{matrix} 1 & 0 & \cdots & 0 \\ 0 \\ \vdots & & \tilde{Q}_2 \\0 \end{matrix} \right]$ ist dann $Q_2A^{(1)} = \left[ \begin{array}{cc|} \alpha_1 & *  \\ 0 & \alpha_2 \\ \vdots & 0 \\ & \vdots \\ 0 & 0 \end{array} \begin{array}{ccc} &* \\ \\ \hline \\  &C &\\ \\ \\ \end{array}\right]$\\
+  usw.\\
+  im k-ten Schritt hat man dann
+  $$Q_k = \left[ \begin{matrix} I_{k-1} \\ & \tilde{Q}_k \end{matrix} \right]$$
+  mit dem Ergebnis $Q_n Q_{n-1} \cdots Q_1 A = R$ mit 
+  $$R = \underbrace{\left[ \begin{matrix} \alpha_1 & & * \\ & \ddots \\ 0 && \alpha_n \\ \\ & 0 \end{matrix} \right]}_n\begin{matrix} \left. \begin{matrix} \\\\\\\end{matrix} \right\} &n \\ \left. \begin{matrix} \\\\\end{matrix} \right\} & m-n\end{matrix}$$
+\end{enumerate}
+\end{nothing}
+
+\begin{nothing}[Rechenaufwand] \leavevmode
+\begin{description}
+  \item[Schritt 1:] $\approx \medspace 2*m*n$ (*,+) Operationen
+\end{description}
+Gesamtaufwand: $2 (m*n + (m-1)(n-1) \cdots (m-n+1) 1 )$\\
+Falls $m=n \medspace \rightarrow \medspace \frac{2}{3}\thinspace n^3$\\
+Falls $m>>n \medspace \rightarrow \medspace 2m ( n + (n-1) + \cdots + 1 ) \approx mn^2)$
+\end{nothing}
+
+\begin{nothing}[Stabilität]
+$A=QR$\\
+Da $Q$ orthogonal ist, gilt $\Vert A \Vert_2 = \Vert QR \Vert_2 = \Vert R \Vert_2$\\
+$\Rightarrow$ Einträge von $R$ können nicht groß werden. \\
+Für das berechnete $\hat{Q}$ gilt $\Vert \hat{Q}^T \hat{Q} - I \Vert < c * eps$ für eine kleine Konstante $c$, d.h. $\hat{Q}$ ist fast orthogonal.\\
+Man kann zeigen, dass 
+$$\Vert A - \hat{Q} \hat{R} \Vert_2 < c\thinspace \Vert A \Vert_2 \thinspace eps$$
+\end{nothing}
+
+\begin{comment}
+QR-Zerlegung ist bis zum Ende durchführbar, falls rang($A$) $= n$ ( dann ist $\alpha_1, \alpha_2, ..., \alpha_n \neq 0$, da rang(A) = rang(R)) \\
+Falls rang(A) $= k < n$ wäre bei der Rechnung ohne Rundungsfehler $\alpha_l = 0$ für ein $l$ und das Verfahren bricht ab. Modifiziere den Algorithmus deswegen:
+\begin{description}
+  \item[1. Schritt:] Berechne $\Vert a_1 \Vert_2, ..., \Vert a_n \Vert_2$ die Spaltennormen und vertausche die Spalten, sodass $\Vert a_1 \Vert_2$ maximal wird:
+  $$Q_1AP_1 = \left[ \begin{matrix} \alpha_1 \\ 0 \\ \vdots && * & \\ 0 \end{matrix} \right], \quad \vert \alpha_1 \vert = \Vert a_1 \Vert_2$$
+  usw. mit Spaltenvertauschungen in weiteren Schritten.\\
+  $\Rightarrow \medspace \vert \alpha_1 \vert \geq \vert \alpha_2 \vert \geq ... \geq \vert \alpha_n \vert > 0$. Falls rang(A) $=k < n$ erhält man $\alpha_{k+1} = 0$ und
+  $$\left[ \begin{array}{c|c}
+    \begin{matrix} \alpha_1 & & R_1 \\ & \ddots \\ 0 && \alpha_k \end{matrix}& R_2 \\
+    \hline
+    0 & 0
+  \end{array}\right]$$
+  $AP = QR$ (numerische Rangentscheidung) \\
+  falls $\frac{\vert \alpha_{k+1} \vert}{\vert \alpha_1 \vert } < 100 eps$ setze Rang($A$) $= k$.
+\end{description}
+\end{comment}
+
+\subsection{Lineare Ausgleichsrechnung}
+
+\begin{problem}
+Zu gegebenen Messdaten $(t_j, y_j)$ $j=1,...,m$ suche $y = f(t)$
+$$f(t) = \sum_{i=1}^n x_i \varphi_i(t),$$
+sodass $y_j \approx f(t_j)$ für $j=1,...,m$.\\
+Hierbei sind die $\varphi_1, ..., \varphi_n$ gegebene Funktionen und $x_1, ..., x_n$ unbekannte Parameter, wobei $m>>n$.\\
+Genauer: $\sum_{j=1}^m (y_j - f(t_j))^2$ soll minimal werden.
+\end{problem}
+
+\begin{nothing}[Matrix-Vektor Formulierung]
+Es sei 
+\begin{align*}
+A &= \left[ \begin{matrix} \varphi_1(t_1) & \cdots & \varphi_n(t_1) \\ \varphi_1(t_2) & \cdots & \varphi_n(t_2) \\ \vdots && \vdots \\ \varphi_1(t_m) & \cdots & \varphi_n(t_m) \end{matrix} \right] \in \mathbb{R}^{m \times n} &\\
+b &= \left[ \begin{matrix} y_1 \\ \vdots \\ y_n \end{matrix} \right] \in \mathbb{R}^n 
+\intertext{Setze}
+x &= \left[ \begin{matrix} x_1 \\ \vdots \\ x_n \end{matrix} \right] &\\
+\intertext{Nun gilt es $\Vert Ax = b \Vert_2$ zu minimieren}
+Ax = b & \Leftrightarrow 
+\left[ \begin{matrix} \varphi_1(t_1) & \cdots & \varphi_n(t_1) \\ \varphi_1(t_2) & \cdots & \varphi_n(t_2) \\ \vdots && \vdots \\ \varphi_1(t_m) & \cdots & \varphi_n(t_m) \end{matrix} \right] 
+\left[ \begin{matrix} x_1 \\ \vdots \\ x_n \end{matrix} \right] = 
+\left[ \begin{matrix} y_1 \\ \vdots \\ y_n \end{matrix} \right] 
+\end{align*}
+\end{nothing}
+
+\begin{example}[Ausgleichsproblem] \leavevmode
+\includegraphics[width=6cm]{Bild6.png}\\
+Wähle $n=2$ mit $\varphi_1(t) = 1$ und $\varphi_2(t) = t$. Dann ergibt sich
+$$f(t) = x_2t + x_1.$$
+Bezeichne nun $x_2$ mit $m$ und $x_1$ mit $c$, um die übliche Geradedarstellung zu erhalten:
+$$f(t) = mt + c,$$
+wobei $c$ der y-Achsenabschnitt und $m$ die Steigung ist.
+Dann ergibt sich:
+\begin{align*}
+&Ax = b \quad \Leftrightarrow &\\
+&\left[ \begin{matrix} t_1 & 1 \\ t_2 & 1 \\ \vdots & \vdots \\ t_m & 1 \end{matrix} \right] \left[ \begin{matrix} m \\ c \end{matrix} \right] = \left[ \begin{matrix} y_1 \\ \vdots \\ y_m \end{matrix} \right]
+\end{align*}
+\end{example}
+
+\begin{theorem}[von Gauß]
+Sei $A \in \mathbb{R}^{m \times n}$, $b \in \mathbb{R}^m$, $m \geq n$. Äquivalent sind:
+\renewcommand{\labelenumi}{\roman{enumi})}
+\begin{enumerate}
+  \item $\Vert Ax - b \Vert_2 = \min_{v \in \mathbb{R}^n} \Vert Av - b \Vert_2$
+  \item $A^TAx = A^tb$ "Normalengleichung"
+\end{enumerate}
+
+\begin{comment*}
+$V = \{Ax: x \in \mathbb{R}^n \} \leq \mathbb{R}^n$ Unterraum\\
+Das gesuchte $Ax$ ist die orthogonale Projektion von $b$ in $V$.\\
+\includegraphics[width=6cm]{Bild7.png}
+\end{comment*}
+\begin{proof}[Beweis]\leavevmode \\
+i) $\Leftrightarrow$ \\
+Für beliebiges $y \in \mathbb{R}^n$ gilt:
+\begin{align*}
+{\Vert Ax - b \Vert_2}^2 &\leq {\Vert A(x+y) - b \Vert_2}^2 &\\
+&= (A(x+y)-b)^T(a(x+y)-b) &\\
+&= (A(x-b)+Ay)^T((Ax-b) + Ay) &\\
+&= {\Vert Ax - b \Vert_2}^2 + 2\underbrace{(Ay)^T (Ax-b)}_{=0} + \underbrace{{\Vert Ay \Vert_2}^2}_{\geq 0} 
+\end{align*}
+$\Leftrightarrow$ $(Ay)^T(Ax-b) = 0$ für alle $y \in \mathbb{R}^n$ \\
+$\Leftrightarrow$ $Ax-b$ ist orthogonal auf $V$ \\
+$\Leftrightarrow$ $y^TA^TAx -y^TA^Tb = 0$ für alle $y \in \mathbb{R}^n$ \\
+$\Leftrightarrow$ $A^TAx - A^Tb = 0$ 
+\end{proof}
+\end{theorem}
+
+\begin{properties}\leavevmode
+\begin{itemize}
+  \item $A^TA \in \mathbb{R}^{n \times n}$ symmetrisch positiv semidefinit [$\forall x \in \mathbb{R}^n: {\Vert Ax \Vert_2}^2 = x^TA^TAx \geq 0$]
+  \item $A^TA$ ist positiv definit $\Leftrightarrow$ Rang($A$) $= n$  [$x^TA^TAx = {\Vert Ax \Vert_2}^2 = 0 \Leftrightarrow Ax = 0 \overset{\text{falls Rang($A$) $=n$}}{ \Leftrightarrow} x = 0$]
+\end{itemize}
+\end{properties}
+
+\begin{algorithm}\leavevmode
+\begin{description}
+  \item[1. Algorithmus] \leavevmode 
+    \begin{algorithmic}
+    \STATE Berechne $A^TA$ ($\frac{1}{2}mn^2$ Operationen)
+    \STATE und $A^Tb$ ($mn$ Operationen)
+    \STATE Löse $A^TAx = A^Tb$ mit der Choleskyzerlegung ($\frac{1}{6} n^3$ Operationen)
+    \end{algorithmic}
+    
+  \item[2. Algorithmus] \leavevmode
+    \begin{algorithmic}
+    \STATE Berechne QR-Zerlegung von $A$ ($mn^2$ Operationen)
+    \STATE Nun gilt $A = QR$ und damit lässt sich ${\Vert Ax-b \Vert_2}^2 = {\Vert QRx-b \Vert_2}^2 = {\Vert Rx - Q^Tb \Vert_2}^2 = {\Vert \tilde{R}x - c \Vert_2}^2 + {\Vert d \Vert_2}^2$ mit $R = \left[ \begin{matrix} \tilde{R} \\ 0 \end{matrix} \right]$ und $Q^Tb = \left[ \begin{matrix} c \\ d \end{matrix} \right]$ umschreiben.
+    \STATE Dabei ist $\tilde{R} = (r_{ij})_{i,j=1}^n$ eine quadratische $n\times n$ rechte obere Dreiecksmatrix und $c$ der Vektor aus den ersten $n$ Einträgen von $Q^Tb$.
+    \STATE $\Vert Ax-b \Vert_2 = \min! \Leftrightarrow \tilde{R}x = c$, dann ist ${\Vert Ax-b \Vert_2}^2 = {\Vert d \Vert_2}^2$
+    \STATE Berechne $Q^Tb = Q_n Q_{n-1}...Q_1b$ ($2nm$ Operationen)
+    \STATE Löse $\tilde{R}x = c$ ($\frac{1}{2}n^2$ Operationen)
+    \end{algorithmic}
+\end{description}
+Der 2. Algorithmus mit der QR-Zerlegung ist etwa doppelt so teuer wie der 1. Algorithmus dafür aber deutlich stabiler.
+\end{algorithm}
+
+\begin{example}
+Sei $A = \left[ \begin{matrix} 1 & 1 \\ \varepsilon & 0 \\ 0 & \varepsilon \end{matrix} \right]$, $b= \left[ \begin{matrix} 1 \\ 0 \\ 0 \end{matrix} \right]$ und $\varepsilon^2 < eps$.\\
+Es gilt $A^TA = \left[ \begin{matrix} 1+ \varepsilon^2 & 1 \\ 1 & 1 + \varepsilon^2 \end{matrix} \right]$ und $A^Tb = \left[ \begin{matrix} 1 \\ 1 \end{matrix} \right]$.\\
+Die exakte Lösung ist $x_1 = x_2 = \frac{1}{2+\varepsilon^2} \approx \frac{1}{2}$ \\
+In Gleitkommaarithmetik ist $A^TA = \left[ \begin{matrix} 1 & 1 \\ 1 & 1 \end{matrix} \right]$ singulär\\
+Die QR-Zerlegung mit Householder (in Gleitkommaarithmetik) liefert das exakte Ergebnis:
+$\alpha_1 = 1$, $v_1 = \left[ \begin{matrix} 2 \\ \varepsilon \\ 0 \end{matrix} \right]$, $R = \left[ \begin{matrix} -1 & -1 \\ 0 & \sqrt{2} \varepsilon \\ 0 & 0 \end{matrix} \right]$, $Q^Tb = \left[ \begin{matrix} 1 \\ \frac{\sqrt{2}}{2} \varepsilon \\ \frac{\sqrt{2}}{2} \varepsilon \end{matrix} \right]$
+\begin{description}
+  \item[Alg. 1:] Lösung von $A^TAx = A^Tb$ $\text{cond}_2(A^TA) = \text{cond}_2(A)^2 \geq \text{cond}_2(A) = \frac{\max_y \Vert Ay \Vert}{\min_z \Vert Az \Vert}$ Der abschließende Bruch funktioniert auch für nicht inv. Matrizen.
+  
+  \item[Alg. 2:] Lösung von $\tilde{R}x = c$, $\text{cond}_2(\tilde{R}) = \text{cond}_2(R) = \text{cond}_2(A)$
+\end{description}
+\end{example}
+
+\section{Nichtlineare Gleichungssysteme}
+\underline{Problemstellung:}\\
+Zu einer Funktion $f: U \subset \mathbb{R}^n \rightarrow \mathbb{R}^n$, $U$ offen, suche $x \in U$ mit $f(x) = 0$, d.h. $\left\{ \begin{matrix} f_1(x_1, ..., x_n) = 0 \\ f_2(x_1, ..., x_n) = 0 \\ \vdots \\ f_n(x_1, ...,x_n) = 0 \end{matrix} \right.$.\\
+Eventuell ex. keine Lösungen
+$$f(x) = e^x$$
+oder es ex. mehrere Lösungen
+$$f(x) = x^2-1 \quad \text{oder} \quad f(x) = tan(x) - x$$
+%
+\underline{\textbf{Erinnerung/Wiederholung:}}
+%
+\begin{description}
+  \item[Definition:] \leavevmode \\
+  Sei $\Omega \subset \mathbb{R}^n$ abgeschlossen. Eine Abbildung $\Phi: \Omega \rightarrow \mathbb{R}^n$ heißt \underline{kontrahierend}, falls
+  $$ \Vert \Phi(x) - \Phi(y) \Vert \leq \Theta \Vert x-y \Vert \quad \text{für } \Theta \in (0,1) \text{ und alle } x, y \in \Omega.$$
+  Eine Abbildung heißt \underline{Selbstabbildung}, falls $\Phi(x) \in \Omega$ für alle $x \in \Omega$.
+  
+  \item[Satz (Spezialfall von BFS)] \leavevmode \\
+  Sei $\Omega \subset \mathbb{R}^n$ abgeschlossen, $\Phi: \Omega \rightarrow \Omega$ eine kontrahierende Selbstabbildung. Dann gilt:
+  \renewcommand{\labelenumi}{\roman{enumi})}
+  \begin{enumerate}
+    \item Es existiert ein Fixpunkt $X^*$ von $\Phi$, d.h. $\Phi(X^*) = X^*$
+    \item Für alle $x^{(0)} \in \Omega$ konvergiert die Folge $(x^{(k)})_{k \in \mathbb{N}}$ definiert durch $x^{(k+1)} = \Phi(x^{(k)})$ gegen $x^*$ mit 
+    \begin{align*}
+      &\Vert x^{(k+1)} - x^{(k)} \Vert \leq L \Vert x^{(k)} - x^{(k-1)} \Vert \quad \text{und} &\\
+      &\Vert x^* - x^{(k)} \Vert \leq \frac{L^k}{1-L} \Vert x^{(1)} - x^{(k)} \Vert \quad \text{für ein } L < 1
+    \end{align*}
+  \end{enumerate}
+  \begin{proof}[Beweis] 
+  Ana II
+  \end{proof}
+\end{description}
+
 %entklammere Graphiken mit \includegraphics wieder 
 \end{document}
