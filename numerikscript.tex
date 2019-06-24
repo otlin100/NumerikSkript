@@ -8,6 +8,16 @@
 \usepackage{amsthm} %Für Theoreme und Beweise
 \usepackage{graphicx} %Für Bilder
 \usepackage{nicefrac}
+\usepackage{hyperref} %Für klickbares Inhaltsverzeichnis
+
+\renewcommand{\contentsname}{Inhaltsverzeichnis}
+\hypersetup{ %Einstellungen für Links (im Inhaltsverzeichnis)
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
 
 \newtheoremstyle{break}% name
   {}%         Space above, empty = `usual value'
@@ -45,6 +55,9 @@
 \begin{document}
 \maketitle
 
+\newpage
+
+\tableofcontents
 \newpage
 
 \section{Numerische Integration}
@@ -1237,7 +1250,7 @@ Also insgesamt Operationen aus $\mathcal{O}(n^2)$.\\
 $A^{(1)} \rightarrow A^{(2)}$: $(n-1)^2$ Operationen. \\
 $A^{(2)} \rightarrow A^{(3)}$: $(n-2)^2$ Operationen. \\
 $\vdots$\\
-$A \rightarrow L,R$: $\sum_{j=1}^n j^2 \approx \frac{1}{3}n^3 \medspace \left(\in \mathcal{O}(n^3)\right)$, da $\underbrace{\frac{1}{n} \sum_{j=0}^n (\frac{j}{n})^2}_{ \approx \int_0^1 x^2 = \frac{1}{3}} n^3$\\
+$A \rightarrow L,R$: $\sum_{j=1}^n j^2 \approx \frac{1}{3}n^3 \medspace \left(\in \mathcal{O}(n^3)\right)$, da $\underbrace{\frac{1}{n} \sum_{j=0}^n \left(\frac{j}{n}\right)^2}_{ \approx \int_0^1 x^2 = \frac{1}{3}} n^3$\\
 Die Lösung von $Lc = Pb$ kostet ebenso wie die Lösung von $Rx = c$ \\
 $1+2+...+(n-1) \approx \frac{1}{2} n^2$ Operationen.\\
 Der Hauptaufwand steckt also in der Berechnung der Zerlegung $PA = LR$. 
@@ -1386,7 +1399,7 @@ a_{11} & z^T \\
 \right]$$
 $C^{(1)}$ ist symmetrisch, da 
 $$c_{ij}^{(1)} = a_{ij} - \underbrace{\frac{a_{i1}}{a_{11}}}_{= l_{i1}} a_{1j} = a_{ji} - \underbrace{\frac{a_{j1}}{a_{11}}}_{= l_{j1}} a_{1i} = c_{ji}^{(1)}$$
-Also ist $C^{(1)}$ insbesondere spd., da für 
+Also ist $C^{(1)}$ insbesondere spd, da für 
 $\left(
 \begin{array}{c}
 x_1 \\
@@ -1659,7 +1672,7 @@ Kondition der Addition:
 \begin{align*}
 &f: (\mathbb{R}^2, \Vert \cdot \Vert_1) \rightarrow (\mathbb{R}, \vert \cdot \vert), \medspace (a, b) \mapsto a+b &\\
 &\kappa_{\text{abs}}(f,(a,b)) = \lim_{\delta \rightarrow 0} \sup_{\vert \alpha \vert + \vert \beta \vert \leq \delta, \medspace z = (\alpha, \beta)} \frac{\vert a + \alpha + b + \beta - a - b \vert}{\vert \alpha \vert + \vert \beta \vert} = 1 &\\
-&\kappa_{\text{rel}}(f,(a,b)) = ... = \frac{^\vert a \vert + \vert b \vert}{\vert a+b \vert} &\\
+&\kappa_{\text{rel}}(f,(a,b)) = ... = \frac{\vert a \vert + \vert b \vert}{\vert a+b \vert} &\\
 \end{align*}
 d.h. für die Addition zweier Zahlen mit gleichem Vorzeichen ist $\kappa_{\text{rel}} = 1$. Für Subtraktion zweier annähernd gleich großer Zahlen ist $\kappa_{\text{rel}}$ groß.
 \end{example}
@@ -1678,7 +1691,7 @@ Falls
 $$ \frac{\Vert A - \tilde{A} \Vert}{\Vert A \Vert} \leq \varepsilon_A, \quad \frac{\Vert b - \tilde{b} \Vert}{\Vert b \Vert} \leq \varepsilon_b$$
 so gilt für die Lösung des LGS:
 $$\frac{\Vert \tilde{x} - x \Vert }{\Vert x \Vert} \leq \frac{\text{cond($A$)}}{1- \varepsilon_A \text{cond($A$)}}(\varepsilon_A + \varepsilon_b)$$
-    falls $\varepsilon_A *\text{cond($A$)} < 1$. Hierbei ist $\text{cond($A$)} = \Vert A \Vert \Vert A^{-1} \Vert$ die Konditionszahl von $A$ und die Matrixnorm wird von der Vektorraumnorm induziert (vgl. 18.3)
+falls $\varepsilon_A *\text{cond($A$)} < 1$. Hierbei ist $\text{cond($A$)} = \Vert A \Vert \Vert A^{-1} \Vert$ die Konditionszahl von $A$ und die Matrixnorm wird von der Vektorraumnorm induziert (vgl. 18.3)
 \begin{proof}[Beweis]
 \begin{align*}
 b - \tilde{b} &= Ax - \tilde{A}\tilde{x} &\\
@@ -1994,7 +2007,7 @@ A &= \left[ \begin{matrix} \varphi_1(t_1) & \cdots & \varphi_n(t_1) \\ \varphi_1
 b &= \left[ \begin{matrix} y_1 \\ \vdots \\ y_n \end{matrix} \right] \in \mathbb{R}^n 
 \intertext{Setze}
 x &= \left[ \begin{matrix} x_1 \\ \vdots \\ x_n \end{matrix} \right] &\\
-\intertext{Nun gilt es $\Vert Ax = b \Vert_2$ zu minimieren}
+\intertext{Nun gilt es $\Vert Ax - b \Vert_2$ zu minimieren}
 Ax = b & \Leftrightarrow 
 \left[ \begin{matrix} \varphi_1(t_1) & \cdots & \varphi_n(t_1) \\ \varphi_1(t_2) & \cdots & \varphi_n(t_2) \\ \vdots && \vdots \\ \varphi_1(t_m) & \cdots & \varphi_n(t_m) \end{matrix} \right] 
 \left[ \begin{matrix} x_1 \\ \vdots \\ x_n \end{matrix} \right] = 
@@ -2104,7 +2117,7 @@ $$f(x) = x^2-1 \quad \text{oder} \quad f(x) = tan(x) - x$$
   $$ \Vert \Phi(x) - \Phi(y) \Vert \leq \Theta \Vert x-y \Vert \quad \text{für } \Theta \in (0,1) \text{ und alle } x, y \in \Omega.$$
   Eine Abbildung heißt \underline{Selbstabbildung}, falls $\Phi(x) \in \Omega$ für alle $x \in \Omega$.
   
-  \item[Satz (Spezialfall von BFS)] \leavevmode \\
+  \item[Satz: (Spezialfall von BFS)] \leavevmode \\
   Sei $\Omega \subset \mathbb{R}^n$ abgeschlossen, $\Phi: \Omega \rightarrow \Omega$ eine kontrahierende Selbstabbildung. Dann gilt:
   \renewcommand{\labelenumi}{\roman{enumi})}
   \begin{enumerate}
@@ -2118,7 +2131,153 @@ $$f(x) = x^2-1 \quad \text{oder} \quad f(x) = tan(x) - x$$
   \begin{proof}[Beweis] 
   Ana II
   \end{proof}
+  
+  \item[Bemerkung:] \leavevmode \\
+  $f(x) \overset{!}{=} 0$ \\
+  Kann man das nichtlineare Gleichungssystem $f(x) = 0$ in eine äquivalente Fixpunktgleichung umwandeln?\\
+  $x = \Phi(x)$ \\
+  Mit Hilfe der Fixpunktgleichung konstruiert man eine Folge $(x_n)_n$ ausgehend von $x_0$ durch $x_{n+1} = \Phi(x_n)$, die hoffentlich gegen $x^*$ mit $x^* = \Phi(x^*)$ konvergiert.
+  
+  \item[Beispiel:] \leavevmode \\
+  $f(x) = 2x - \tan(x) \overset{!}{=} 0$ \\
+  Fixpunktgleichungen:\\
+  $x = \frac{1}{2} \tan(x) \medspace \Rightarrow \medspace \Phi_1(x) = \frac{1}{2} \tan(x)$ \\
+  $x = \arctan(2x) \medspace \Rightarrow \medspace \Phi_2(x) = \arctan(2x)$ 
+  $$\left( \begin{array}{l} 2x - \tan(x) - x = -x \\ x = \tan(x) -x \end{array} \right)$$
 \end{description}
 
+\subsection{Newton-Verfahren}
+\begin{nothing}[Illustration]
+\includegraphics[height=5cm]{Bild8.png}
+\includegraphics[height=5cm]{Bild9.png}\\
+Startwert $x_0$, $x_1$ Schnitt der Tangente von $f$ im Punkt $(x_0, f(x_0))$ mit der x-Achse, $x_2$ Schnitt der Tangente in $(x_1, f(x_1))$ mit x-Achse, usw.
+\end{nothing}
+
+\begin{nothing}[Herleitung Newton-Verfahren]
+Sei $x_0$ in der Nähe einer Nullstelle $x^*$ von $f: \mathbb{R}^n \rightarrow \mathbb{R}^n$. Taylorentwicklung liefert 
+\begin{align*}
+0 = f(x^*) = f(x_0 + (x^* - x_0)) = f(x_0) + f'(x_0)(x^* - x_0) + \mathcal{O}(\Vert x^* - x_0 \Vert ^2)
+\end{align*}
+Dabei ist $f'(x_0)$ die Jacobimatrix an der Stelle $x_0$. \\
+Näherungsweise gilt damit, falls $f'(x_0)$ invertierbar ist
+\begin{align*}
+&x^* - x_0 \approx - f'(x_0)^{-1} f(x_0)
+\intertext{Setze nun}
+&x_1 = x_0 - f'(x_0)^{-1} f(x_0)
+\end{align*}
+\underline{Gewöhnliches Newtonverfahren:}
+\begin{algorithmic}
+\STATE $x_0$ ist gegeben
+\FOR{$k = 0,1,...$}
+\STATE Löse $f'(x_k)\Delta x_k = -f(x_k)$ LGS (z.B. mit LR-Zerlegung)
+\STATE $x_{k+1} = x_k + \Delta x_k$
+\ENDFOR
+\end{algorithmic}
+\end{nothing}
+
+\begin{theorem}
+Sei $f$ dreimal stetig differenzierbar, $f(x^*) = 0$, $f'$ invertierbar in einer Umgebung von $x^*$ und die Folge $(x_k)_k$ definiert durch das gewöhnliche Newtonverfahren. Dann gilt für den Fehler $e_k = x_k - x^*$
+$$e_k = \frac{1}{2} f'(x_k)^{-1} f''(x_k)[e_k, e_k] + \mathcal{O}( \Vert e_k \Vert ^3)$$
+Insbesondere gilt $\Vert e_{k+1} \Vert \leq C \Vert e_k \Vert ^2$, d.h. das Newtonverfahren konvergiert quadratische (Ordnung 2), falls $\Vert e_k \Vert$ genügend klein ist.\\
+Dabei ist 
+$$f''(x) [y,z] = \sum_{k=1}^n z_k \sum_{j=1}^n \frac{\delta^2}{\delta_{x_k} \delta_{x_j}} f(x) y_j \medspace \in \mathbb{R}^n$$ 
+\begin{proof}[Beweis]\leavevmode \\
+\begin{align*}
+0 &= f(x^*) = f(x_k - e_k) &\\
+&\overset{\text{Taylor}}{=} f(x_k) - f'(x)_ke_k + \frac{1}{2} f''(x_k) [e_k, e_k] + \mathcal{O}(\Vert e_k \Vert ^3) &\\
+&= -f''(x_k) (x_{k+1} + x^* - x^* - x_k) - f'(x_k) e_k + \frac{1}{2} f''(x_k) [e_k, e_k] + \mathcal{O}(\Vert e_k \Vert ^3) &\\
+&= -f'(x_k) (e_{k+1}) + \frac{1}{2} f''(x_k)[e_k, e_k] + \mathcal{O}(\Vert e_k \Vert ^3) &\\
+\Rightarrow \medspace &e_{k+1} = \frac{1}{2} f'(x_k)^{-1} f''(x_k)[e_k, e_k] + \mathcal{O}(\Vert e_k \Vert ^3) &\\
+\Rightarrow \medspace &\Vert e_{k+1} \Vert \leq \frac{1}{2} C \Vert e_k \Vert ^2
+\end{align*}
+\end{proof}
+\end{theorem}
+
+\begin{definition}
+Eine Folge $(x_k)_k$ konvergiert mit Ordnung $p$ für $p \geq 1$ gegen $x^*$ falls ein $C \geq 0$ exisitert mit
+$$ \Vert x_{k+1} - x^* \Vert \leq C \Vert x_k - x^* \Vert ^p,$$
+wobei $C < 1$, falls $p=1$.
+\end{definition}
+
+\begin{theorem}[Newton Mysovskii]
+$f \in \mathcal{C}^1(D, \mathbb{R}^n)$, $D \subset \mathbb{R}^n$ offene Teilmenge, $f'(x)$ invertierbar für bel. $x \in D$ und es gelte:
+\renewcommand{\labelenumi}{\roman{enumi})}
+\begin{enumerate}
+  \item $\Vert \Delta x_0 \Vert \leq \alpha$ (Definition von $\alpha$)
+  \item $\Vert f'(x)^{-1} (f'(y) - f'(z)) (y-z) \Vert \leq \omega \Vert y-z \Vert ^2$ (Definiton von $\omega$) für bel. $x, z \in D$ und festes $y \in \overline{xz}$
+  \item $y := \frac{1}{2} \alpha \omega < 1$
+  \item Für $\rho := \frac{\alpha}{1-y}$ ist $B_{\rho}(x_0) \subset D$
+\end{enumerate}
+Dann gilt für die Folge der Iteration des Newtonverfahrens $(x_k)_k$:
+\begin{itemize}
+  \item $(x_k)_k \subset B_{\rho}(x_o)$
+  \item $x_k \rightarrow x^*$ für $k \rightarrow \infty$ mit $f(x^*) = 0$, genauer:
+  \item $\Vert x_{k+1} - x_k \Vert \leq \frac{\omega}{2} \Vert x_k - x_{k-1} \Vert^2$
+\end{itemize}
+Hierbei ist $\overline{xz}$ die Strecke zwischen $x$ und $z$ und 
+$B_{\rho}(x_0) = \{x \in \mathbb{R}^n, \Vert x-x_0 \Vert < \rho \}$ die offene Kugel um $x_0$ mit Radius $\rho$.
+\begin{proof}[Beweis] mühsam \end{proof}
+\end{theorem}
+
+\begin{nothing}[Praktische Durchführung]\leavevmode
+\begin{algorithmic}
+\STATE $x_0$ sei gegeben.
+\FOR{$k= 0,1,2,...$}
+  \STATE Löse $f'(x_k) \Delta x_k = -f(x_k)$ mit LR-Zerlegung
+  \STATE $x_{k+1} = x_k + \Delta x_k$
+  \IF{$ \Vert \Delta_k \Vert \leq \text{TOL}$ or $k \geq k_{\max}$}
+    \STATE $x_{k+1}$ ist die Lösung
+    \STATE Warnung, falls $k \geq k_{\max}$
+  \ENDIF
+\ENDFOR
+\end{algorithmic}
+$\Vert f(x_k) \Vert \leq \text{TOL}$ ist \textbf{kein} geeignetes Abbruchkriterium. Ersetzt man die nichtlineare Gleichung $f(x) = 0$ durch $\tilde{f}(x) = Af(x) = 0$ für $A$ invertierbare Matrix, so ändern sich die Iterierten nicht. \\
+$f \mapsto Af \medspace \Rightarrow \medspace f'(x)^{-1}f(x) \mapsto f'(x)^{-1}A^{-1}Af(x)$ \\
+Man sagt, das Newtonverfahren ist \underline{affin invariant}. Deswegen sollte sich auch das Abbruchkriterium nicht ändern. \\
+$\Vert f(x) \Vert \mapsto \Vert af(x) \Vert$ statt $\Vert x_k \Vert \leq \text{TOL}$ oft $\Vert x_k \Vert \leq \frac{\text{TOL}}{1- \frac{\Vert \Delta_k \Vert}{\Vert \Delta_k - 1 \Vert}}$
+\end{nothing}
+
+\begin{nothing}[Vereinfachtes Newtonverfahren] \leavevmode
+\begin{description}
+  \item[Algorithmus:]\leavevmode
+  \begin{algorithmic}
+  \STATE $A \approx f'(x_0)$ ($LR = A$)
+  \FOR{$k=0,1,...$}
+    \STATE Löse $A \Delta x_k = -f(x_0)$ (mit LR von A)
+    \STATE $x_{k+1} = x_k + \Delta x_k$
+  \ENDFOR
+  \end{algorithmic}
+  
+  \item[Satz 1:]\leavevmode\\
+  Sei $f \in \mathcal{C}^2(D, \mathbb{R}^n)$, $f(x^*) = 0$ und $A$ invertierbar. Dann gilt für $e_k = x_k - x^*$
+  $$e_{k+1} = (I-A^{-1}f'(x_k)) e_k + \mathcal{O}( \Vert e_k \Vert^2)$$
+  \begin{proof}[Beweis]
+  \begin{align*}
+  0 &= f(x^*) = f(x_k-e_k) \overset{\text{Taylor}}{=} f(x_0) - f'(x_k)e_k + \mathcal{O}(\Vert e_k \Vert^2) &\\
+  f(x_k) &= -A( x_{k+1} - x^* + x^* - x_k) = -A(e_{k+1} - e_k) &\\
+  0 &= -A(e_{k+1} - e_k) - f'(x_k)e_k + \mathcal{O}(\Vert e_k \Vert^2) &\\
+  \Rightarrow \medspace &Ae_{k+1} = (A-f'(x_k))e_k + \mathcal{O}(\Vert e_k \Vert^2)
+  \end{align*}
+  \end{proof}
+  
+  \item[Satz 2:] \leavevmode \\
+  Sei $f \in \mathcal{C}^1(D, \mathbb{R}^n)$, $A$ invertierbar, $x_0 \in D$ mit 
+  \renewcommand{\labelenumi}{\roman{enumi})}
+  \begin{enumerate}
+    \item $\Vert \Delta x_0 \Vert \leq \alpha$
+    \item $\Vert I - A^{-1}f'(x) \Vert \leq y < 1$ für bel. $x \in D$
+    \item $B_{\rho}(x_0) \subset D$ mit $\rho = \frac{\alpha}{1-y}$
+  \end{enumerate}
+  Dann konvergiert $x_k$ aus dem Algorithmus gegen $x^*$ mit $f(x^*) = 0$ $\Vert x_{k+1} -x_k \Vert \leq y \Vert x_k - x_{k-1} \Vert$, d.h. das vereinfachte Newtonverfahren konvergiert lokal linear.
+  \begin{proof}[Beweis]
+  Das vereinfachte Newtonverfahren ist Fixpunktiteration zu $\Phi(x) = x-A^{-1}f(x)$
+  \begin{itemize}
+    \item $\Phi$ ist kontrahierend wegen ii)
+    \item $\Phi$ ist eine Selbstabbildung
+  \end{itemize}
+  $\Rightarrow$ BFS liefert die Behauptung.
+  \end{proof}
+\end{description}
+\end{nothing}
 %entklammere Graphiken mit \includegraphics wieder 
 \end{document}
